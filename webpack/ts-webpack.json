@@ -1,0 +1,8 @@
+{
+    "extends": "./ts-base",
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2015",
+        "lib": ["es2015"]
+    }
+}

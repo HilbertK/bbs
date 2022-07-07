@@ -1,0 +1,31 @@
+@import 'antd/dist/antd.css';
+
+body {
+  margin: 0;
+  font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+#root {
+  min-height: 100vh;
+  height: 100vh;
+}
+
+.MuiInputBase-root legend {
+  width: 0;
+}
+.SnackbarContainer-top {
+  top: 50px !important;
+}
+.SnackbarItem-message {
+  padding: 2px 0 !important;
+}
+.SnackbarContent-root {
+  min-width: 200px !important;
+}
