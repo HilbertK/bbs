@@ -53,7 +53,10 @@
   },
   "scripts": {
     "dev": "$npm_package_config_webpack serve --port 9000 --config webpack.config.ts",
-    "build": "$npm_package_config_webpack --mode=production --config webpack.config.ts"
+    "build": "$npm_package_config_webpack --mode=production --config webpack.config.ts",
+    "build-es6": "npm-run-all build-es6:ts build-es6:scss",
+    "build-es6:ts": "tsc --outDir dist --target es6 --sourceMap false --declaration",
+    "build-es6:scss": "./node_modules/.bin/sass --no-source-map src/:dist/"
   },
   "eslintConfig": {
     "extends": [
@@ -86,6 +89,7 @@
     "tslint": "^6.1.3",
     "eslint": "^8.19.0",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-prefer-arrow": "^1.2.3"
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "npm-run-all": "^4.1.5"
   }
 }
