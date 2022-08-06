@@ -1,5 +1,5 @@
 import {generateConfiguration} from './webpack/webpack-util';
-import {WebpackOptionsNormalized} from 'webpack';
+import {WebpackOptionsNormalized, DefinePlugin} from 'webpack';
 import path from 'path';
 import HtmlPlugin from 'html-webpack-plugin';
 
@@ -10,6 +10,7 @@ export default (
         mode?: 'production', // 模式
         config: Array<string>, // 配置文件
         env: Record<string, unknown>, // 环境变量
+        basename?: string,
     },
 ) => {
     const config = generateConfiguration(
@@ -52,6 +53,9 @@ export default (
                 },
                 favicon: path.resolve(process.cwd(), 'public/favicon.ico'),
                 env: process.env,
+            }),
+            new DefinePlugin({
+                __base_name__: JSON.stringify(process.env.BASE_NAME ?? '')
             }),
         ])
     } as WebpackOptionsNormalized;

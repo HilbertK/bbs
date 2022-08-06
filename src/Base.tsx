@@ -28,11 +28,12 @@ function Base() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(true);
-    const [value, setValue] = useState<number | boolean>(() => {
+    const getNewIndex = () => {
         const newIndex = tabList.findIndex(tab => location.pathname === tab.link);
         if (newIndex < 0) return false;
         return newIndex;
-    });
+    };
+    const [value, setValue] = useState<number | boolean>(getNewIndex);
     const onTabClick = useCallback((link: string) => () => {
         navigate(link);
     }, []);
@@ -40,6 +41,9 @@ function Base() {
         setValue(newValue);
     };
     const setValueEmpty = () => setValue(false);
+    useEffect(() => {
+        setValue(getNewIndex());
+    }, [location.pathname]);
     useEffect(() => {
         const fetch = async () => {
             setLoading(true);
