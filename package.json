@@ -57,7 +57,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development $npm_package_config_webpack serve --port 9000 --config webpack.config.ts",
     "build": "$npm_package_config_webpack --mode=production --config webpack.config.ts",
-    "build:bbs": "cross-env BASE_NAME=bbs NODE_ENV=production $npm_package_config_webpack --mode=production --config webpack.config.ts",
+    "build:bbs": "cross-env SUB_PATH=center BASE_NAME=bbs NODE_ENV=production $npm_package_config_webpack --mode=production --config webpack.config.ts",
     "build-es6": "npm-run-all build-es6:ts build-es6:scss",
     "build-es6:ts": "tsc --outDir dist --target es6 --sourceMap false --declaration",
     "build-es6:scss": "./node_modules/.bin/sass --no-source-map src/:dist/"

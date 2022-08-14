@@ -2,9 +2,11 @@ import { isDevelopment } from '../../utils/util';
 
 export const subPathKey = 'id';
 
+const subBasePath = __sub_path__ !== '' ? `/${__sub_path__}` : '';
+
 export const baseUrl = isDevelopment ?
     `${window.location.protocol}//localhost:3100`
-    : `${window.location.protocol}//${window.location.host}`;
+    : `${window.location.protocol}//${window.location.host}${subBasePath}`;
 export const userSystemPath = '/system/user';
 export const roleSystemPath = '/system/role';
 

@@ -61,7 +61,8 @@ export default (
             }),
             new DefinePlugin({
                 __node_env__: JSON.stringify(process.env.NODE_ENV ?? 'production'),
-                __base_name__: JSON.stringify(process.env.BASE_NAME ?? '')
+                __base_name__: JSON.stringify(process.env.BASE_NAME ?? ''),
+                __sub_path__: JSON.stringify(process.env.SUB_PATH ?? ''),
             }),
         ])
     } as WebpackOptionsNormalized;
