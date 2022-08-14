@@ -1,8 +1,9 @@
 {
   "name": "bbs",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@babel/core": "^7.18.6",
     "@babel/preset-env": "^7.18.6",
     "@emotion/react": "^11.9.3",
@@ -19,15 +20,17 @@
     "babel-loader": "^8.2.5",
     "copy-webpack-plugin": "^11.0.0",
     "cross-env": "^7.0.3",
+    "crypto-js": "^4.1.1",
     "css-loader": "^6.7.1",
     "eventemitter3": "^4.0.7",
     "hotkeys-js": "^3.9.4",
     "html-webpack-plugin": "^5.5.0",
     "is-hotkey": "^0.2.0",
     "lodash-es": "^4.17.21",
+    "md5": "^2.3.0",
     "mini-css-extract-plugin": "^2.6.1",
     "moment": "^2.29.4",
-    "notistack": "^2.0.5",
+    "qs": "^6.11.0",
     "quill-emoji": "^0.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -52,9 +55,9 @@
     "webpack": "cross-env TS_NODE_PROJECT=\"./webpack/ts-webpack.json\" webpack"
   },
   "scripts": {
-    "dev": "$npm_package_config_webpack serve --port 9000 --config webpack.config.ts",
+    "dev": "cross-env NODE_ENV=development $npm_package_config_webpack serve --port 9000 --config webpack.config.ts",
     "build": "$npm_package_config_webpack --mode=production --config webpack.config.ts",
-    "build:bbs": "cross-env BASE_NAME=bbs $npm_package_config_webpack --mode=production --config webpack.config.ts",
+    "build:bbs": "cross-env BASE_NAME=bbs NODE_ENV=production $npm_package_config_webpack --mode=production --config webpack.config.ts",
     "build-es6": "npm-run-all build-es6:ts build-es6:scss",
     "build-es6:ts": "tsc --outDir dist --target es6 --sourceMap false --declaration",
     "build-es6:scss": "./node_modules/.bin/sass --no-source-map src/:dist/"
@@ -78,8 +81,10 @@
     ]
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.1.1",
     "@types/jest": "^27.5.2",
     "@types/lodash-es": "^4.17.6",
+    "@types/md5": "^2.3.2",
     "@types/node": "^16.11.43",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
@@ -87,10 +92,10 @@
     "@types/webpack": "^5.28.0",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
-    "tslint": "^6.1.3",
     "eslint": "^8.19.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "tslint": "^6.1.3"
   }
 }

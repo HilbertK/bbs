@@ -1,7 +1,7 @@
 import { Box, CircularProgress } from '@mui/material';
-import { useSnackbar } from 'notistack';
 import { FC, useEffect, useState } from 'react';
 import { List } from '../../components/articles/List';
+import { useMessage } from '../../hooks/useMessage';
 import { ArticleListFilters, IArticleData } from '../../service/interface';
 import { service } from '../../service/mock-service';
 
@@ -13,7 +13,7 @@ export const MineArticles: FC<{
     const [loading, setLoading] = useState<boolean>(false);
     const [total, setTotal] = useState<number>(0);
     const [start, setStart] = useState<number>(0);
-    const { enqueueSnackbar } = useSnackbar();
+    const { notification } = useMessage();
     const fetchData = async (
         start: number,
         filters: ArticleListFilters,
@@ -44,7 +44,7 @@ export const MineArticles: FC<{
             try {
                 await fetchData(0, filters, []);
             } catch (e) {
-                enqueueSnackbar('加载失败', { variant: 'error' });
+                notification.error({ message: '加载失败' });
                 console.error(e);
             } finally {
                 setLoading(false);

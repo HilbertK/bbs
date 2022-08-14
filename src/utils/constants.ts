@@ -7,6 +7,7 @@ export enum Page {
     Publish = 'publish',
     Article = 'article',
     Login = 'login',
+    Sub = 'sub',
 }
 
 export const PageTitle = {

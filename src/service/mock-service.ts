@@ -4,7 +4,7 @@ import { calcArticleHot } from '../utils/util';
 import { dateFormat } from './constants';
 import { IArticleData, ArticleParams, ArticleListData, ArticleListParams, IUserInfo } from './interface';
 
-type SignupUser = IUserInfo & {password: string};
+type SignupUser = Omit<IUserInfo, 'roles' | 'realname'> & {password: string};
 
 class MockService {
     private storeArticleKey = 'store-article';
@@ -19,7 +19,7 @@ class MockService {
         const now = Date.now().toString();
         const newArticle: IArticleData = {
             id: newId,
-            author: this.getStorageCurrUser()?.name ?? this.devAuthor,
+            author: this.getStorageCurrUser()?.realname ?? this.devAuthor,
             view_num: 0,
             like_num: 0,
             collect_num: 0,
@@ -152,12 +152,12 @@ class MockService {
         return `user-${uuid().slice(-this.LongRandomLength)}`;
     }
 
-    private setStorageUser(userInfo: Omit<SignupUser, 'id'>) {
+    private setStorageUser(userInfo: Omit<SignupUser, 'userId'>) {
         const newUserId = this.generateUserId();
         const allUsers = this.getStorageSignupUsers();
         const newUser: SignupUser = {
             ...userInfo,
-            id: newUserId,
+            userId: newUserId,
         };
         localStorage.setItem(this.storeSignupUsersKey, JSON.stringify([...allUsers, newUser]));
         return newUserId;
@@ -174,7 +174,7 @@ class MockService {
         return users;
     }
 
-    private setStorageCurrUser(userInfo: IUserInfo) {
+    private setStorageCurrUser(userInfo: Partial<IUserInfo>) {
         localStorage.setItem(this.storeCurrUserKey, JSON.stringify(userInfo));
     }
 
@@ -198,10 +198,10 @@ class MockService {
         const allUsers = this.getStorageSignupUsers();
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                const loginUser = allUsers.find(item => item.name === username && item.password === password);
+                const loginUser = allUsers.find(item => item.username === username && item.password === password);
                 if (loginUser) {
-                    const { id, name, avatar } = loginUser;
-                    this.setStorageCurrUser({id, name, avatar});
+                    const { userId, username, avatar } = loginUser;
+                    this.setStorageCurrUser({userId, username, avatar});
                     resolve(loginUser);
                 } else {
                     reject('用户名或密码错误');
@@ -213,8 +213,8 @@ class MockService {
     public signup(username: string, password: string) {
         return new Promise((resolve) => {
             setTimeout(() => {
-                const baseUser: Omit<IUserInfo, 'id'> = {
-                    name: username,
+                const baseUser: Omit<IUserInfo, 'userId' | 'roles' | 'realname'> = {
+                    username,
                     avatar: '',
                 };
                 const newId = this.setStorageUser({

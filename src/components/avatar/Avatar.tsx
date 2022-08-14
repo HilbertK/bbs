@@ -18,7 +18,7 @@ export const Avatar: React.FunctionComponent<IAvatar> = React.memo(
         }, []);
         return (
             <AvatarWrapper size={size} isRound={isRound}>
-                {url && !error && <AvatarImg src={url} onError={onImgError} />}
+                {url && !error && <AvatarImg size={size} isRound={isRound} src={url} onError={onImgError} />}
                 <DefaultAvatar name={name} avatarColor={avatarColor} size={size} isRound={isRound} />
             </AvatarWrapper>
         );
@@ -36,12 +36,15 @@ const AvatarWrapper = styled.div<{
     flex-shrink: 0;
 `;
 
-const AvatarImg = styled.img`
+const AvatarImg = styled.img<{
+    size: number,
+    isRound: boolean,
+}>`
     position: absolute;
     z-index: 1;
     top: 0;
     left: 0;
-    width: 32px;
-    height: 32px;
-    border-radius: 16px;
+    width: ${props => props.size}px;
+    height: ${props => props.size}px;
+    border-radius: ${({ size, isRound }) => isRound ? `${size / 2}px` : 'unset'};
 `;

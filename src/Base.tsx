@@ -1,15 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Tabs, Tab, Box, Skeleton } from '@mui/material';
 import moment from 'moment';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Page, PageTitle } from './utils/constants';
 import { Font, Palette, Shadow } from './base/style';
 import { ContentCenterStyle, contentWidth, headerMenuHeight, TabBaseStyle, TabsBaseStyle } from './ui/base-utils';
 import { HeaderUser } from './pages/mine/HeaderUser';
 import 'moment/locale/zh-cn';
-import { service } from './service/mock-service';
-import mineSlice from './pages/mine/slice';
+import { getUserInfoAction } from './store/user-slice';
+import { Dispatch } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
 import { RootState } from './store';
 
 moment.locale('zh-cn');
@@ -26,8 +27,8 @@ const tabList = [{
 
 function Base() {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const [loading, setLoading] = useState<boolean>(true);
+    const dispatch: Dispatch<any> = useDispatch();
+    const loading = useSelector((state: RootState) => state.user.loading);
     const getNewIndex = () => {
         const newIndex = tabList.findIndex(tab => location.pathname === tab.link);
         if (newIndex < 0) return false;
@@ -45,17 +46,7 @@ function Base() {
         setValue(getNewIndex());
     }, [location.pathname]);
     useEffect(() => {
-        const fetch = async () => {
-            setLoading(true);
-            const user = await service.fetchCurrUser();
-            if (user == null) {
-                navigate(`/${Page.Login}`);
-            } else {
-                dispatch(mineSlice.actions.setUserInfo(user));
-            }
-            setLoading(false);
-        };
-        void fetch();
+        dispatch(getUserInfoAction());
     }, []);
     if (loading) return (
         <Box sx={LoadingContainer}>
@@ -66,48 +57,60 @@ function Base() {
         </Box>
     );
     return (
-        <>
-            <Tabs
-                value={value}
-                onChange={handleChange}
-                sx={{
-                    ...TabsBaseStyle,
-                    position: 'relative',
-                    backgroundColor: '#fff',
-                    boxShadow: Shadow.Light,
-                    '& .MuiTabs-flexContainer': {
-                        ...ContentCenterStyle,
-                        width: '100%',
-                    }
-                }}
-                textColor='inherit'
-            >
-                {tabList.map(tab => (
-                    <Tab
-                        sx={{
-                            ...Font.TitleMediumBold,
-                            height: `${headerMenuHeight}px`,
-                            padding: '20px 16px',
-                            ...TabBaseStyle
-                        }}
-                        key={tab.name}
-                        onClick={onTabClick(tab.link)}
-                        label={tab.name}
-                    />
-                ))}
+        <Box sx={ContainerStyle}>
+            <Box sx={{ position: 'relative' }}>
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    sx={{
+                        ...TabsBaseStyle,
+                        zIndex: 1,
+                        position: 'relative',
+                        backgroundColor: '#fff',
+                        boxShadow: Shadow.Light,
+                        borderBottom: `1px solid ${Palette.Line.DarkNormal}`,
+                        '& .MuiTabs-flexContainer': {
+                            ...ContentCenterStyle,
+                            width: '100%',
+                        }
+                    }}
+                    textColor='inherit'
+                >
+                    {tabList.map(tab => (
+                        <Tab
+                            sx={{
+                                ...Font.TitleMediumBold,
+                                height: `${headerMenuHeight}px`,
+                                padding: '20px 16px',
+                                ...TabBaseStyle
+                            }}
+                            key={tab.name}
+                            onClick={onTabClick(tab.link)}
+                            label={tab.name}
+                        />
+                    ))}
+                </Tabs>
                 <Box sx={{
                     position: 'absolute',
                     top: 0,
                     right: '25px',
+                    zIndex: 1,
                     height: '100%',
                     cursor: 'pointer',
                     ...ContentCenterStyle,
                 }}><HeaderUser onRouteChange={setValueEmpty} /></Box>
-            </Tabs>
+            </Box>
             <Outlet />
-        </>
+        </Box>
     );
 }
+
+const ContainerStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    overflow: 'hidden',
+    minHeight: '100vh'
+};
 
 const LoadingContainer = {
     width: '100%',

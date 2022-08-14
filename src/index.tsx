@@ -10,7 +10,7 @@ import { Category } from './pages/category';
 import { Publish } from './pages/publish';
 import { Page } from './utils/constants';
 import { Article } from './pages/article';
-import { Login } from './pages/login';
+import { Sub } from './pages/sub';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -24,8 +24,8 @@ root.render(
         <Route path={`/${Page.Category}`} element={<Category />} />
         <Route path={`/${Page.Publish}`} element={<Publish />} />
         <Route path={`/${Page.Article}`} element={<Article />} />
+        <Route path={`/${Page.Sub}`} element={<Sub />} />
       </Route>
-      <Route path={`/${Page.Login}`} element={<Login />} />
     </Routes>
   </BrowserRouter>
 );

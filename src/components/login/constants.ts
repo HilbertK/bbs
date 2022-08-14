@@ -1,10 +1,14 @@
 import { Palette, RoundCorner } from '../../base/style';
-import { calcWidth } from '../../utils/util';
 
-export const loginContentWidth = calcWidth(400);
+export const loginContentWidth = 400;
 export enum LoginMode {
     Login='login',
     Signup='Signup'
+}
+
+export enum UserType {
+    NaturalPerson='natural_person',
+    LegalPerson='legal_person'
 }
 
 export const LoginDict = {
@@ -21,14 +25,15 @@ export const SubmitButtonStyle = {
     marginTop: '10px',
     width: '100%',
     borderRadius: RoundCorner(1),
-    backgroundColor: Palette.Base.Clicked,
+    backgroundColor: Palette.Brand.Clicked,
     '&:hover': {
-        backgroundColor: Palette.Base.Hover,
+        backgroundColor: Palette.Brand.Hover,
     },
     padding: '4px 15px'
 };
 
 export const InputTextStyle = {
+    width: '100%',
     paddingBottom: '20px',
     '& .MuiFormHelperText-root.Mui-error': {
         position: 'absolute',

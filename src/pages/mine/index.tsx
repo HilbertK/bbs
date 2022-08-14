@@ -9,7 +9,7 @@ import { MineArticles } from './Articles';
 import { mineCenterAvatarSize, mineCenterContentTop, mineCenterInfoContentSize, mineDetailContentWidth, mineDetailSiderWidth } from './constants';
 
 export const Mine: FC = () => {
-    const userInfo = useSelector((state: RootState) => state.mine.userInfo);
+    const userInfo = useSelector((state: RootState) => state.user.userInfo);
     const [checkedTab, setCheckedTab] = useState<number>(0);
     if (userInfo === null) return null;
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -17,7 +17,7 @@ export const Mine: FC = () => {
     };
     const menuList = [{
         title: '文章',
-        comp: <MineArticles filters={{ author: [userInfo.name] }} />
+        comp: <MineArticles filters={{ author: [userInfo.username] }} />
     }, {
         title: '收藏',
         comp: <MineArticles filters={{ collect: [true] }} />
@@ -31,13 +31,13 @@ export const Mine: FC = () => {
                     <Box sx={AvatarContainer}>
                         <Avatar
                             url={userInfo.avatar}
-                            name={userInfo.name}
+                            name={userInfo.username}
                             size={mineCenterAvatarSize}
                             isRound={false}
                         />
                     </Box>
                     <Box sx={InfoContent}>
-                        <Box sx={NameStyle}>{userInfo.name}</Box>
+                        <Box sx={NameStyle}>{userInfo.username}</Box>
                         <Box sx={DesStyle}></Box>
                     </Box>
                 </Box>

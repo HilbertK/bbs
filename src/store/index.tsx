@@ -5,6 +5,7 @@ import homeSlice, {InitialState as HomeInitialState} from '../pages/home/slice';
 import mineSlice, {InitialState as MineInitialState} from '../pages/mine/slice';
 import publishSlice, {InitialState as PublishInitialState} from '../pages/publish/slice';
 import articleSlice, {InitialState as ArticleInitialState} from '../pages/article/slice';
+import userSlice, {InitialState as UserInitialState} from './user-slice';
 import {Page} from '../utils/constants';
 
 const createStore = () => configureStore({
@@ -16,6 +17,7 @@ const createStore = () => configureStore({
         [Page.Mine]: mineSlice.reducer,
         [Page.Publish]: publishSlice.reducer,
         [Page.Article]: articleSlice.reducer,
+        user: userSlice.reducer,
     }),
 });
 
@@ -27,4 +29,5 @@ export interface RootState {
     [Page.Mine]: MineInitialState,
     [Page.Publish]: PublishInitialState,
     [Page.Article]: ArticleInitialState,
+    user: UserInitialState,
 }

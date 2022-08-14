@@ -14,7 +14,7 @@ import { Border, Font, Palette } from '../../base/style';
 import { listWidth, menuWidth } from './constants';
 import { List } from '../../components/articles/List';
 import { ArticleListSorter, IArticleData } from '../../service/interface';
-import { useSnackbar } from 'notistack';
+import { useMessage } from '../../hooks/useMessage';
 
 type MenuItems = Required<MenuProps>['items'];
 
@@ -66,7 +66,7 @@ export const Category: FC = () => {
   const [total, setTotal] = useState<number>(0);
   const list = useSelector((state: RootState) => state.category.list);
   const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
+  const { notification } = useMessage();
   const sorterList: SorterTitle[] = [{
     title: '最新',
     key: timeSorter.key,
@@ -118,7 +118,7 @@ export const Category: FC = () => {
       try {
         await fetchData(categoryFilter, currSorter, 0, []);
       } catch (e) {
-        enqueueSnackbar('加载失败', { variant: 'error' });
+        notification.error({message: '加载失败'});
         console.error(e);
       } finally {
         setLoading(false);

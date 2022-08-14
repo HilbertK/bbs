@@ -54,11 +54,11 @@ module.exports = {
         "@typescript-eslint/consistent-type-assertions": "error",
       "dot-notation": "off", // 使用.而非[]访问属性
       "@typescript-eslint/dot-notation": "off", // 允许使用['aa']访问字段
-      "@typescript-eslint/naming-convention": ["error", { // 默认变量命名为camelCase，增加PascalCase
-        "selector": "variable",
-        "format": ["camelCase", "PascalCase"],
-        "leadingUnderscore": "allow" // 允许头部带下划线
-    }],
+    //   "@typescript-eslint/naming-convention": ["error", { // 默认变量命名为camelCase，增加PascalCase
+    //     "selector": "variable",
+    //     "format": ["camelCase", "PascalCase"],
+    //     "leadingUnderscore": "allow" // 允许头部带下划线
+    // }],
       // "@typescript-eslint/no-parameter-properties": "off", // 默认即关闭
       "no-unused-expressions": "off", // 避免无效表达式
       "@typescript-eslint/no-unused-expressions": ["error"],

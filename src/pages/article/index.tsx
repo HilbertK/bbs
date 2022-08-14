@@ -1,6 +1,5 @@
 import { Box } from '@mui/material';
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { useSnackbar } from 'notistack';
 import { service } from '../../service/mock-service';
 import { operateErrorTips } from '../../service/constants';
 import { Loading } from './Loading';
@@ -14,21 +13,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import acticleSlice from './slice';
 import { useSearchParams } from 'react-router-dom';
+import { useMessage } from '../../hooks/useMessage';
 
 export const Article: FC = () => {
     const article = useSelector((state: RootState) => state.article.data);
     const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
-    const { enqueueSnackbar } = useSnackbar();
+    const { notification } = useMessage();
     const [searchParams] = useSearchParams();
     const onLike = async () => {
         if (article == null) return;
         try {
             const newArticle = await service.toggleArticleLike(article.id);
             dispatch(acticleSlice.actions.setData(newArticle));
-            enqueueSnackbar(article.like ? '已取消点赞' : '已点赞', { variant: 'success' });
+            notification.success({message: article.like ? '已取消点赞' : '已点赞'});
         } catch {
-            enqueueSnackbar(operateErrorTips, { variant: 'error' });
+            notification.error({message: operateErrorTips});
         }
     };
     const onCollect = async () => {
@@ -36,9 +36,9 @@ export const Article: FC = () => {
         try {
             const newArticle = await service.toggleArticleCollect(article.id);
             dispatch(acticleSlice.actions.setData(newArticle));
-            enqueueSnackbar(article.collect ? '已取消收藏' : '已收藏', { variant: 'success' });
+            notification.success({message: article.collect ? '已取消收藏' : '已收藏'});
         } catch {
-            enqueueSnackbar(operateErrorTips, { variant: 'error' });
+            notification.error({message: operateErrorTips});
         }
     };
     useEffect(() => {

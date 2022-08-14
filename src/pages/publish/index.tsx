@@ -1,7 +1,6 @@
 import { Box, Button } from '@mui/material';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
 import ReactQuill from 'react-quill';
 import { Border, Font, Palette, RoundCorner, Shadow } from '../../base/style';
 import { Input } from '../../components/Input';
@@ -15,6 +14,7 @@ import { publishStorageService } from './Storage';
 import isString from 'lodash-es/isString';
 import { getArticleLink } from '../../utils/util';
 import { catalogWidth } from '../article/constants';
+import { useMessage } from '../../hooks/useMessage';
 
 export const Publish: FC = () => {
     const [content, setContent] = useState<string>(publishStorageService.getStoragePublishArticle()?.data ?? '');
@@ -23,7 +23,7 @@ export const Publish: FC = () => {
     const [headingList, setHeadingList] = useState<CatalogItem[]>([]);
     const [category, setCategory] = useState<string[]>(publishStorageService.getStoragePublishArticle()?.category ?? []);
     const editorRef = useRef<ReactQuill>(null);
-    const { enqueueSnackbar } = useSnackbar();
+    const { notification } = useMessage();
     const navigate = useNavigate();
     const generateCatalog = () => {
         let newHeadingList: CatalogItem[] = [];
@@ -64,15 +64,15 @@ export const Publish: FC = () => {
     };
     const onPublish = useCallback(async () => {
         if (title === '') {
-            enqueueSnackbar('请输入标题', { variant: 'warning' });
+            notification.warning({ message: '请输入标题' });
             return;
         }
         if (content.length === 0) {
-            enqueueSnackbar('请输入内容', { variant: 'warning' });
+            notification.warning({ message: '请输入内容' });
             return;
         }
         if (category.length === 0) {
-            enqueueSnackbar('未选择分类', { variant: 'warning' });
+            notification.warning({ message: '未选择分类' });
             return;
         }
         try {
@@ -85,11 +85,11 @@ export const Publish: FC = () => {
             setContent('');
             setTitle('');
             publishStorageService.clearContentStorage();
-            enqueueSnackbar('发布成功', { variant: 'success' });
+            notification.success({ message: '发布成功' });
             navigate(getArticleLink(newId));
         } catch (e) {
             console.error(e);
-            enqueueSnackbar('发布失败', { variant: 'error' });
+            notification.error({ message: '发布失败，请重试' });
         }
     }, [content, title, category, publishStorageService]);
     useEffect(() => {
@@ -100,7 +100,7 @@ export const Publish: FC = () => {
             storageContent.title === '' &&
             storageContent.description === '')
         ) return;
-        enqueueSnackbar('从上次编辑处恢复', { variant: 'info' });
+        notification.info({ message: '从上次编辑处恢复' });
         generateCatalog();
     }, []);
     return (

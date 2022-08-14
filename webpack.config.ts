@@ -33,13 +33,18 @@ export default (
             headers: {'Access-Control-Allow-Origin': '*'},
             open: true,
             historyApiFallback: true,
-            // proxy: {
-            //     '/': {
-            //         target: '',
-            //         secure: false,
-            //         changeOrigin: true,
-            //     },
-            // },
+            proxy: {
+                '/jeecg-boot': {
+                    target: 'http://www.pifutan.com',
+                    secure: false,
+                    changeOrigin: true,
+                },
+                '/upload': {
+                    target: 'http://localhost:3300/upload',
+                    secure: false,
+                    changeOrigin: true,
+                }
+            },
         },
         plugins: (config.plugins ?? []).concat([
             new HtmlPlugin({
@@ -55,6 +60,7 @@ export default (
                 env: process.env,
             }),
             new DefinePlugin({
+                __node_env__: JSON.stringify(process.env.NODE_ENV ?? 'production'),
                 __base_name__: JSON.stringify(process.env.BASE_NAME ?? '')
             }),
         ])

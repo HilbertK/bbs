@@ -1,9 +1,6 @@
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import PersonIcon from '@mui/icons-material/Person';
-import WysiwygIcon from '@mui/icons-material/Wysiwyg';
-import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { useNavigate } from 'react-router-dom';
 import { Avatar } from '../../components/avatar/Avatar';
 import { service } from '../../service/mock-service';
@@ -12,48 +9,36 @@ import { Page } from '../../utils/constants';
 import { drawerWidth } from './constants';
 import mineSlice from './slice';
 import { Font, Palette } from '../../base/style';
+import { subRoutes, SubRouteType } from './sub-routes';
+import { Login } from '../../components/login';
+import { logout } from '../../store/user-slice';
+import { Dispatch } from '@reduxjs/toolkit';
 
 export const HeaderUser: FC<{
     onRouteChange: () => void,
 }> = props => {
     const { onRouteChange } = props;
-    const userInfo = useSelector((state: RootState) => state.mine.userInfo);
+    const dispatch: Dispatch<any> = useDispatch();
+    const [loginOpen, setLoginOpen] = useState<boolean>(false);
+    const userInfo = useSelector((state: RootState) => state.user.userInfo);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const mineMenu = [
-        {
-            title: '个人中心',
-            link: `/${Page.Mine}`,
-            handler: () => {
-                onRouteChange();
-                navigate(`/${Page.Mine}`);
-                setActiveIndex(0);
-            },
-            icon: <PersonIcon />
-        },
-        {
-            title: '工单系统',
-            link: `/${Page.Mine}`,
-            handler: () => {
-                onRouteChange();
-                navigate(`/`);
-                setActiveIndex(1);
-            },
-            icon: <WysiwygIcon />
-        },
-        {
-            title: '退出登录',
-            link: null,
-            icon: <PowerSettingsNewIcon />,
-            handler: () => {
-                service.signout();
-                onRouteChange();
-                navigate(`${Page.Login}`);
-                dispatch(mineSlice.actions.setUserInfo(null));
+    const mineMenu = subRoutes.map((subRoute, index) => ({
+        ...subRoute,
+        handler: () => {
+            const { type, link } = subRoute;
+            switch (type) {
+                case SubRouteType.Page:
+                    setActiveIndex(index);
+                    break;
+                case SubRouteType.Signout:
+                    dispatch(logout(false));
+                    return;
             }
-        }
-    ];
-    const findActiveIndex = () => mineMenu.findIndex(item => location.pathname === item.link);
+            onRouteChange();
+            navigate(link);
+        },
+    }));
+    const findActiveIndex = () => mineMenu.findIndex(item => `${location.pathname}${location.search}` === item.link);
     const [menuVisible, setMenuVisible] = useState<boolean>(false);
     const [activeIndex, setActiveIndex] = useState<number>(findActiveIndex);
     const itemHandler = (handler: any) => () => {
@@ -61,18 +46,24 @@ export const HeaderUser: FC<{
         setMenuVisible(false);
     };
     const openHandler = () => {
+        if (userInfo?.username == null) {
+            setLoginOpen(true);
+            return;
+        }
         setActiveIndex(findActiveIndex());
         setMenuVisible(true);
     };
+    const onLoginModalClose = () => setLoginOpen(false);
     const renderAvatar = () => (
         <Avatar
             url={userInfo?.avatar ?? ''}
-            name={userInfo?.name ?? '登录'}
+            name={userInfo?.username ?? '登录'}
         />
     );
     return (
         <Box>
             <Box onClick={openHandler}>{renderAvatar()}</Box>
+            <Login open={loginOpen} onClose={onLoginModalClose} />
             <Drawer
                 anchor='right'
                 open={menuVisible}
@@ -85,14 +76,14 @@ export const HeaderUser: FC<{
                 }}
             >
                 <Box sx={drawerHeader}>
-                    <Box sx={drawerHeaderText}>{userInfo?.name}</Box>
+                    <Box sx={drawerHeaderText}>{userInfo?.username}</Box>
                     {renderAvatar()}
                 </Box>
                 <List>
-                    {mineMenu.map(({ title, handler, icon }, index) => (
+                    {mineMenu.map(({ title, handler, iconComp }, index) => (
                         <ListItem key={title} disablePadding>
                             <ListItemButton selected={index === activeIndex} onClick={itemHandler(handler)}>
-                                <ListItemIcon>{icon}</ListItemIcon>
+                                <ListItemIcon>{iconComp}</ListItemIcon>
                                 <ListItemText primary={title} />
                             </ListItemButton>
                         </ListItem>

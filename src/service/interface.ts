@@ -62,8 +62,55 @@ export type IArticleData = IArticle & {
     [rest: string]: any,
 };
 
+export interface LoginParams {
+    username: string,
+    password: string,
+    captcha: string,
+    checkKey: number,
+}
+
+export interface RegisterParams {
+    username: string,
+    password: string,
+    usertype: string,
+    realname: string,
+    phone?: string,
+}
+
+export interface ThirdLoginParams {
+    token: string,
+    thirdType: string,
+}
+
+export interface RoleInfo {
+    roleName: string,
+    value: string,
+}
+
+/**
+ * @description: Login interface return value
+ */
+export interface LoginResultModel {
+    userId: string | number,
+    token: string,
+    role: RoleInfo,
+}
+
+/**
+ * @description: Get user information return value
+ */
 export interface IUserInfo {
-    name: string,
-    id: string,
+    roles: RoleInfo[],
+    // 用户id
+    userId: string | number,
+    // 用户名
+    username: string,
+    // 真实名字
+    realname: string,
+    // 头像
     avatar: string,
+    // 介绍
+    desc?: string,
+    // 用户信息
+    userInfo?: any,
 }
