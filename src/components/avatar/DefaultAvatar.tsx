@@ -34,7 +34,7 @@ const AvatarWrap = styled.div<{
     height: ${props => props.size}px;
     border-radius: ${({ size, isRound }) => isRound ? `${size / 2}px` : 'unset'};
     line-height: ${props => props.size}px;
-    background: ${props => (props.avatarColor ? props.avatarColor : Palette.Brand.Default)};
+    background: ${props => (props.avatarColor ? props.avatarColor : Palette.Brand.Normal)};
     text-align: center;
     font-size: ${props => props.size - 20}px;
     color: #fff;

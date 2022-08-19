@@ -1,4 +1,4 @@
-@import 'antd/dist/antd.css';
+@import 'antd/dist/antd.variable.min.css';
 
 body {
   margin: 0;
@@ -19,13 +19,4 @@ code {
 
 .MuiInputBase-root legend {
   width: 0;
-}
-.SnackbarContainer-top {
-  top: 50px !important;
-}
-.SnackbarItem-message {
-  padding: 2px 0 !important;
-}
-.SnackbarContent-root {
-  min-width: 200px !important;
 }

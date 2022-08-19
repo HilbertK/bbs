@@ -56,7 +56,7 @@ export default (
                 minify: {
                     removeComments: true,
                 },
-                favicon: path.resolve(process.cwd(), 'public/favicon.ico'),
+                favicon: path.resolve(process.cwd(), 'public/favicon.png'),
                 env: process.env,
             }),
             new DefinePlugin({

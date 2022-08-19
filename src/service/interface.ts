@@ -77,6 +77,11 @@ export interface RegisterParams {
     phone?: string,
 }
 
+export interface CheckerParams {
+    username?: string,
+    phone?: string,
+}
+
 export interface ThirdLoginParams {
     token: string,
     thirdType: string,
@@ -111,6 +116,9 @@ export interface IUserInfo {
     avatar: string,
     // 介绍
     desc?: string,
+    email?: string,
+    phone?: string,
+    birthday?: string,
     // 用户信息
     userInfo?: any,
 }

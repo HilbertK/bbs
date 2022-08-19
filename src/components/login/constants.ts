@@ -25,7 +25,7 @@ export const SubmitButtonStyle = {
     marginTop: '10px',
     width: '100%',
     borderRadius: RoundCorner(1),
-    backgroundColor: Palette.Brand.Clicked,
+    backgroundColor: Palette.Brand.Normal,
     '&:hover': {
         backgroundColor: Palette.Brand.Hover,
     },

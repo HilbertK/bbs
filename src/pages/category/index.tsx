@@ -189,6 +189,6 @@ const SorterItem = {
   marginRight: '16px',
   cursor: 'pointer',
   '&:hover': {
-    color: Palette.Brand.Default
+    color: Palette.Brand.Hover
   }
 };

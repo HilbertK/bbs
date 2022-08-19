@@ -71,7 +71,7 @@ const ItemStyle = {
     padding: '20px 0',
     borderBottom: Border.DarkNormal,
     '&:hover': {
-        borderBottom: `1px solid ${Palette.Brand.Default}`,
+        borderBottom: `1px solid ${Palette.Brand.Hover}`,
     },
     '&:last-child': {
         border: 'none',

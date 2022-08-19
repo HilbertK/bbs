@@ -1,7 +1,7 @@
 
 import { defHttp } from '../utils/http';
 import { isDevelopment } from '../utils/util';
-import { IUserInfo, LoginParams, LoginResultModel, RegisterParams, ThirdLoginParams } from './interface';
+import { CheckerParams, IUserInfo, LoginParams, LoginResultModel, RegisterParams, ThirdLoginParams } from './interface';
 import { setAuthCache } from '../utils/auth';
 import { TOKEN_KEY } from '../utils/cache/enum';
 
@@ -19,6 +19,8 @@ enum Api {
     GetPermCode = '/sys/permission/getPermCode',
     //修改密码
     PasswordChange = '/sys/user/passwordChange',
+    //校验用户接口
+    checkOnlyUser = '/sys/user/checkOnlyUser',
     //第三方登录
     thirdLogin = '/sys/thirdLogin/getLoginUser',
     PositionList = '/sys/position/list',
@@ -27,6 +29,7 @@ enum Api {
     QueryDepartTreeSync = '/sys/sysDepart/queryDepartTreeSync',
     QueryTreeList = '/sys/sysDepart/queryTreeList',
     GetTableList = '/sys/user/queryUserComponentData',
+    minioUpload = '/sys/upload/uploadMinio',
 }
 
 export const baseDomainUrl = isDevelopment ? 'http://localhost:8080/jeecg-boot' : 'https://www.pifutan.com/jeecg-boot';
@@ -53,6 +56,12 @@ export function loginApi(params: LoginParams) {
 export function register(params: RegisterParams) {
     return defHttp.post({ url: Api.registerApi, params });
 }
+
+/**
+ *校验用户是否存在
+ * @param params
+ */
+export const checkOnlyUser = (params: CheckerParams) => defHttp.get({ url: Api.checkOnlyUser, params }, { isTransformResponse: false });
 
 export function getCodeInfo(currdatetime: number) {
     let url = Api.getInputCode + `/${currdatetime}`;

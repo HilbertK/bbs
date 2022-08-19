@@ -37,7 +37,7 @@ export const Login: FC<{
                         />
                     ))}
                 </Tabs>
-                {checkedTabs === 0 ? <LoginForm onLogin={onClose} /> : <RegisterForm onLogin={onClose} />}
+                {checkedTabs === 0 ? <LoginForm onLogin={onClose} /> : <RegisterForm onRegister={onClose} />}
             </Box>
         </AModal>
     );

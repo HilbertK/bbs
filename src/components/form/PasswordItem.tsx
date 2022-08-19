@@ -1,5 +1,6 @@
 import { Box, FormControl, IconButton, Input, InputAdornment, InputLabel } from '@mui/material';
-import { ChangeEventHandler, FC, useState } from 'react';
+import { ChangeEventHandler, FC, useCallback, useState } from 'react';
+import _debounce from 'lodash-es/debounce';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { InputTextStyle } from '../login/constants';
@@ -16,10 +17,10 @@ export const PasswordItem: FC<{
     onChange: (value: InputItemValue) => void,
 }> = ({ label, error, value, onChange, id }) => {
     const [showPassword, toggleShowPassword] = useState<boolean>(false);
-    const changeHandler: ChangeEventHandler<HTMLInputElement> = e => {
+    const onChangeWithDebounce: ChangeEventHandler<HTMLInputElement> = useCallback(_debounce(e => {
         const newValue = e.target.value;
         onChange(newValue === '' ? null : newValue);
-    };
+    }, 500), [onChange]);
     const handleClickShowPassword = () => toggleShowPassword(prev => !prev);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -32,8 +33,8 @@ export const PasswordItem: FC<{
                 maxRows={1}
                 type={showPassword ? 'text' : 'password'}
                 error={Boolean(error)}
-                value={value ?? ''}
-                onChange={changeHandler}
+                defaultValue={value ?? ''}
+                onChange={onChangeWithDebounce}
                 endAdornment={
                     <InputAdornment position="end">
                         <IconButton

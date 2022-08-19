@@ -9,7 +9,7 @@ import { CategoryList } from '../../utils/constants';
 import { CascaderMenu } from '../../components/CascaderMenu';
 import { Editor } from '../../components/quill/Editor';
 import { CatalogItem } from '../../base/interface';
-import { contentTop, SingleText } from '../../ui/base-utils';
+import { BaseButtonStyle, contentTop, SingleText } from '../../ui/base-utils';
 import { publishStorageService } from './Storage';
 import isString from 'lodash-es/isString';
 import { getArticleLink } from '../../utils/util';
@@ -139,13 +139,7 @@ export const Publish: FC = () => {
                     <Button
                         variant='contained'
                         onClick={onPublish}
-                        sx={{
-                            backgroundColor: Palette.Brand.Default,
-                            '&:hover': {
-                                backgroundColor: Palette.Brand.Hover,
-                            },
-                            padding: '4px 15px'
-                        }}
+                        sx={BaseButtonStyle}
                     >发布</Button>
                 </Box>
             </Box>

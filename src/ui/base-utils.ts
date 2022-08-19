@@ -79,7 +79,29 @@ export const TabsBaseStyle = {
     },
 };
 
+export const BaseButtonStyle = {
+    padding: '4px 15px'
+};
+
+export const GrayOutlineButtonStyle = {
+    border: `1px solid ${Palette.Fill.Normal}`,
+    color: Palette.Fill.Normal,
+    '&:hover': {
+        border: `1px solid ${Palette.Fill.Emphasize}`,
+        color: Palette.Fill.Emphasize,
+    },
+    padding: '4px 15px'
+};
+
 export const contentWidth = calcWidth(1080);
 export const contentTop = calcWidth(32);
 export const blockSpacing = calcWidth(16);
 export const headerMenuHeight = 64;
+
+export const antdColor = {
+    primaryColor: Palette.Brand.Clicked,
+    errorColor: '#ff4d4f',
+    warningColor: '#faad14',
+    successColor: '#52c41a',
+    infoColor: '#1890ff',
+};

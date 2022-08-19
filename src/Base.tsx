@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Tabs, Tab, Box, Skeleton } from '@mui/material';
 import moment from 'moment';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Page, PageTitle } from './utils/constants';
-import { Font, Palette, Shadow } from './base/style';
-import { ContentCenterStyle, contentWidth, headerMenuHeight, TabBaseStyle, TabsBaseStyle } from './ui/base-utils';
+import { Dark, Font, Palette, Shadow } from './base/style';
+import { ContentCenterStyle, contentWidth, headerMenuHeight } from './ui/base-utils';
 import { HeaderUser } from './pages/mine/HeaderUser';
 import 'moment/locale/zh-cn';
 import { getUserInfoAction } from './store/user-slice';
 import { Dispatch } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
 import { RootState } from './store';
+import { Logo } from './components/Logo';
 
 moment.locale('zh-cn');
 const tabList = [{
@@ -59,6 +59,7 @@ function Base() {
     return (
         <Box sx={ContainerStyle}>
             <Box sx={{ position: 'relative' }}>
+                <Logo sx={LogoStyle} />
                 <Tabs
                     value={value}
                     onChange={handleChange}
@@ -66,9 +67,9 @@ function Base() {
                         ...TabsBaseStyle,
                         zIndex: 1,
                         position: 'relative',
-                        backgroundColor: '#fff',
-                        boxShadow: Shadow.Light,
-                        borderBottom: `1px solid ${Palette.Line.DarkNormal}`,
+                        backgroundColor: Dark.Gray[400],
+                        boxShadow: Shadow.Large,
+                        borderBottom: `1px solid ${Palette.Fill.Normal}`,
                         '& .MuiTabs-flexContainer': {
                             ...ContentCenterStyle,
                             width: '100%',
@@ -80,6 +81,7 @@ function Base() {
                         <Tab
                             sx={{
                                 ...Font.TitleMediumBold,
+                                fontWeight: 900,
                                 height: `${headerMenuHeight}px`,
                                 padding: '20px 16px',
                                 ...TabBaseStyle
@@ -120,6 +122,34 @@ const LoadingContent = {
     width: `${contentWidth}px`,
     margin: '0 auto',
     padding: '30px 0'
+};
+
+const TabBaseStyle = {
+    color: '#fff',
+    opacity: 1,
+    '&.Mui-selected': {
+        background: Palette.Brand.Normal,
+    },
+    '&:hover': {
+        color: Palette.Brand.Clicked,
+    },
+    '&.Mui-selected:hover': {
+        color: '#fff'
+    },
+};
+
+const TabsBaseStyle = {
+    '& .MuiTabs-indicator': {
+        backgroundColor: Palette.Brand.Normal
+    },
+};
+
+const LogoStyle = {
+    position: 'absolute',
+    left: '50px',
+    top: '50%',
+    zIndex: 2,
+    transform: 'translate(0, -50%)',
 };
 
 export default Base;

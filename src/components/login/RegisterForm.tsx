@@ -1,14 +1,18 @@
 import { FC, useState } from 'react';
+import _debounce from 'lodash-es/debounce';
 import { register } from '../../service/api';
 import { FormItemType } from '../form/constants';
 import { Form, FromValueContent, IFormItem } from '../form/Form';
 import { UserType } from './constants';
+import { checkPhone, checkUsername } from '../../service/api-utils';
 
 const userTypeId = 'usertype';
+
 const registerFormItems: Array<IFormItem> = [
     {
         id: 'username',
         label: '账号',
+        validator: checkUsername,
         required: true,
         type: FormItemType.Text,
         maxLength: 20,
@@ -50,6 +54,7 @@ const NaturalPersonItems: Array<IFormItem> = [{
 }, {
     id: 'phone',
     label: '手机号',
+    validator: checkPhone,
     required: true,
     type: FormItemType.Text,
     maxLength: 11,
@@ -64,9 +69,9 @@ const LegalPersonItems: Array<IFormItem> = [{
 }];
 
 export const RegisterForm: FC<{
-    onLogin: () => void,
+    onRegister: () => void,
 }> = props => {
-    const { onLogin } = props;
+    const { onRegister } = props;
     const [items, setItems] = useState<Array<IFormItem>>([...registerFormItems, ...NaturalPersonItems]);
     const onFinish = async (result: Record<string, string>) => {
         try {
@@ -77,7 +82,7 @@ export const RegisterForm: FC<{
                 realname: result.realname,
                 phone: result.phone,
             });
-            // onLogin();
+            // onRegister();
         } catch (error) {
             console.error(error);
         }

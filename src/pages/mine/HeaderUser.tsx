@@ -13,6 +13,7 @@ import { subRoutes, SubRouteType } from './sub-routes';
 import { Login } from '../../components/login';
 import { logout } from '../../store/user-slice';
 import { Dispatch } from '@reduxjs/toolkit';
+import { defaultAvatarSize } from '../../components/avatar/DefaultAvatar';
 
 export const HeaderUser: FC<{
     onRouteChange: () => void,
@@ -62,7 +63,7 @@ export const HeaderUser: FC<{
     );
     return (
         <Box>
-            <Box onClick={openHandler}>{renderAvatar()}</Box>
+            <Box sx={AvatarWrapperStyle} onClick={openHandler}>{renderAvatar()}</Box>
             <Login open={loginOpen} onClose={onLoginModalClose} />
             <Drawer
                 anchor='right'
@@ -104,4 +105,9 @@ const drawerHeader = {
 const drawerHeaderText = {
     ...Font.TitleMediumBold,
     color: Palette.Text.Title
+};
+
+const AvatarWrapperStyle = {
+    borderRadius: `${defaultAvatarSize / 2}px`,
+    border: '1px solid #fff',
 };

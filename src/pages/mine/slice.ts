@@ -3,6 +3,7 @@ import { IUserInfo } from '../../service/interface';
 import { Page } from '../../utils/constants';
 
 export interface InitialState {
+    // TODO: 去掉
     userInfo: IUserInfo | null,
 }
 

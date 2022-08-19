@@ -1,118 +1,72 @@
-import React, {useMemo, useRef} from 'react';
-import {Box, SxProps, Theme} from '@mui/material';
-import {useDropzone, Accept} from 'react-dropzone';
-import {Palette} from '../base/style';
+import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
+import { Box } from '@mui/material';
+import { Upload } from 'antd';
+import ImgCrop from 'antd-img-crop';
+import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import React, { useState } from 'react';
+import { useMessage } from '../hooks/useMessage';
 
-export const defaultMaxFileSize = 20971520;
+const { notification } = useMessage();
+export const Uploader: React.FC<{
+    maxCount: number,
+}> = props => {
+    const { maxCount } = props;
+    const [loading, setLoading] = useState(false);
+    const [imageUrl, setImageUrl] = useState<string>();
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-export interface UploaderProps {
-    onDrop: (acceptedFiles: File[]) => void | Promise<void>,
-    accept: Accept,
-    maxFiles: number,
-    multiple: boolean,
-    maxSize?: number,
-    disabled?: boolean,
-    sx?: SxProps<Theme>,
-    children?: React.ReactNode,
-}
-
-export const Uploader: React.FC<UploaderProps> = props => {
-    const {
-        maxFiles, maxSize = defaultMaxFileSize, multiple,
-        accept, onDrop, children, sx = {}, disabled = false,
-    } = props;
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const handleClick = () => {
-        if (disabled) return;
-        fileInputRef.current?.click();
-    };
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (files == null) {
-            return;
+    const onChange: UploadProps['onChange'] = info => {
+        if (info.file.status === 'uploading') {
+            setLoading(true);
+            // return;
         }
-        void onDrop(Array.from(files));
-        if (fileInputRef.current != null) {
-            fileInputRef.current.value = '';
+        if (info.file.status === 'done') {
+            setLoading(false);
         }
+        setFileList(info.fileList);
     };
-    const {
-        getRootProps,
-        getInputProps,
-        isFocused,
-        isDragActive,
-        isDragReject
-    } = useDropzone({
-        noClick: true,
-        accept,
-        onDrop,
-        maxFiles,
-        multiple,
-        maxSize,
-        disabled,
-    });
-    const style = useMemo(() => ({
-        ...BaseStyle,
-        ...(isFocused ? FocusedStyle : {}),
-        ...(isDragActive ? ActiveStyle : {}),
-        ...(isDragReject ? RejectStyle : {})
-    }), [
-        isFocused,
-        isDragActive,
-        isDragReject
-    ]);
-    const extraClassName = useMemo(() => ([
-        isFocused ? 'focused' : '',
-        isDragActive ? 'active' : '',
-        isDragReject ? 'reject' : '',
-    ].filter(Boolean).join(' ')), [
-        isFocused,
-        isDragActive,
-        isDragReject
-    ]);
+
+    const beforeUpload = (file: RcFile) => {
+        const isLt2M = file.size / 1024 / 1024 < 20;
+        if (!isLt2M) {
+            notification.error({message: '文件大小不能超过20MB'});
+        }
+        return isLt2M;
+    };
+
     return (
-        <Box
-            sx={{
-                ...sx,
-                '&:hover': {
-                    backgroundColor: Palette.Base.LightBG,
-                    color: Palette.Base.Clicked,
-                    borderColor: Palette.Base.Hover,
-                }
-            }}
-            {...getRootProps(style)}
-            className={extraClassName}
-            onClick={handleClick}
-        >
-            <Box
-                component='input'
-                {...getInputProps()}
-                onChange={handleFileChange}
-                ref={fileInputRef}
-                onClick={(e: React.MouseEvent) => e.stopPropagation()}
-            />
-            {children}
-        </Box>
+        <ImgCrop rotate>
+            <Upload
+                beforeUpload={beforeUpload}
+                maxCount={maxCount}
+                action="/api/v1/buckets/test/objects/upload"
+                listType="picture-card"
+                fileList={fileList}
+                onChange={onChange}
+                showUploadList={false}
+            >
+                <Box sx={ContentStyle}>
+                    <Box sx={ButtonStyle}>
+                        {loading ? <LoadingOutlined /> : <UploadOutlined />}
+                    </Box>
+                    {imageUrl && <Box component='img' src={imageUrl}></Box>}
+                </Box>
+            </Upload>
+        </ImgCrop>
     );
 };
 
-const BaseStyle = {
-    backgroundColor: Palette.Fill.LightNormal,
-    color: Palette.Text.Asider,
-    border: `1px dashed ${Palette.Line.GrayBG}`,
+const ContentStyle = {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
 };
 
-const FocusedStyle = {
-    borderColor: Palette.Base.Hover,
-};
-
-const ActiveStyle = {
-    backgroundColor: Palette.Base.LightBG,
-    color: Palette.Base.Clicked,
-    borderColor: Palette.Base.Hover,
-};
-
-const RejectStyle = {
-    color: Palette.Error.Clicked,
-    borderColor: Palette.Error.Hover,
+const ButtonStyle = {
+    background: 'rgba(0,0,0,0.3)',
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
 };

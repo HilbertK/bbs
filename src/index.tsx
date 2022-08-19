@@ -11,6 +11,7 @@ import { Publish } from './pages/publish';
 import { Page } from './utils/constants';
 import { Article } from './pages/article';
 import { Sub } from './pages/sub';
+import { Setting } from './pages/setting';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -25,6 +26,7 @@ root.render(
         <Route path={`/${Page.Publish}`} element={<Publish />} />
         <Route path={`/${Page.Article}`} element={<Article />} />
         <Route path={`/${Page.Sub}`} element={<Sub />} />
+        <Route path={`/${Page.Setting}`} element={<Setting />} />
       </Route>
     </Routes>
   </BrowserRouter>

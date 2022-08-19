@@ -4,6 +4,11 @@ import {createTheme} from '@mui/material';
 import {Border, Palette, Spacing} from '../base/style';
 
 export const Theme = createTheme({
+    palette: {
+        primary: {
+            main: Palette.Brand.Normal,
+        },
+    },
     spacing: Spacing.FixedInPixel,
     typography: {
         fontFamily: '"PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
@@ -39,6 +44,9 @@ export const Theme = createTheme({
         MuiInputLabel: {
             styleOverrides: {
                 root: {
+                    '&.Mui-focused': {
+                        color: Palette.Fill.Emphasize
+                    },
                     fontSize: 'inherit', // 组件存在默认字体，此处使用继承实现
                 },
             }
@@ -48,7 +56,7 @@ export const Theme = createTheme({
                 root: {
                     '&:hover':{ // 设置所有的输入框outlined模式下hover时候的颜色是主题色
                         'fieldset.MuiOutlinedInput-notchedOutline': {
-                            border: `1px solid ${Palette.Brand.Clicked}`,
+                            border: `1px solid ${Palette.Fill.Emphasize}`,
                         },
                     },
                     'fieldset.MuiOutlinedInput-notchedOutline': {
@@ -63,12 +71,15 @@ export const Theme = createTheme({
                     },
                     '&.Mui-focused': {
                         'fieldset.MuiOutlinedInput-notchedOutline': {
-                            border: `1px solid ${Palette.Brand.Clicked}`,
+                            border: `1px solid ${Palette.Fill.Emphasize}`,
                             borderRadius: '4px',
                         },
                     },
                     '&.Mui-error .MuiOutlinedInput-notchedOutline': {
                         borderColor: `${Palette.Error.Default} !important`,
+                    },
+                    '&:after': {
+                        borderBottom: `2px solid ${Palette.Fill.Emphasize} !important`,
                     },
                 },
 
@@ -132,6 +143,15 @@ export const Theme = createTheme({
             styleOverrides: {
                 root: {
                     marginTop: '4px', // 下拉菜单距离输入框 4px
+                }
+            }
+        },
+        MuiListItemButton: {
+            styleOverrides: {
+                root: {
+                    '&.Mui-selected': {
+                        backgroundColor: Palette.Brand.DarkBG
+                    }
                 }
             }
         }

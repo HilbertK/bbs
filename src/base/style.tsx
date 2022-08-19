@@ -283,6 +283,7 @@ export const Dark = {
 export const Palette = {
     Brand: {
         Default: Light.Red[500],
+        Normal: Light.Red[600],
         Clicked: Light.Red[700],
         Hover: Light.Red[400],
         Extra: Light.Red[300],
