@@ -1,4 +1,5 @@
 /* eslint-disable guard-for-in */
+import { RcFile } from 'antd/lib/upload';
 import { IArticleData } from '../service/interface';
 import { Page } from './constants';
 import { isObject } from './is';
@@ -45,6 +46,12 @@ export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
     }
     return src;
 }
+
+export const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result as string));
+    reader.readAsDataURL(img);
+};
 
 export const getArticleLink = (id: string) => `/${Page.Article}?id=${id}`;
 

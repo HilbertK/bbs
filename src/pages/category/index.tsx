@@ -1,6 +1,6 @@
-import { Box, CircularProgress } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { FC, useEffect, useState } from 'react';
-import { Menu, MenuProps } from 'antd';
+import { Empty, Menu, MenuProps, Spin } from 'antd';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
@@ -154,8 +154,11 @@ export const Category: FC = () => {
             >{title}</Box>
           ))}
         </Box>
-        <List list={list} total={total} loadMore={loadMore} />
-      </Box> : <CircularProgress sx={{ margin: '32px auto 0' }} />}
+        {list.length ?
+          <List list={list} total={total} loadMore={loadMore} />
+          : <Empty style={{ padding: '32px 0' }} description={false} />
+        }
+      </Box> : <Spin style={{ margin: '32px auto 0' }} />}
     </Box>
   );
 };

@@ -1,5 +1,5 @@
 import { Box, Button, Tab, Tabs } from '@mui/material';
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -11,7 +11,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import { Font, Palette, RoundCorner, Shadow } from '../../base/style';
 import { Avatar } from '../../components/avatar/Avatar';
 import { RootState } from '../../store';
-import { BaseButtonStyle, contentTop, contentWidth, TabBaseStyle, TabsBaseStyle } from '../../ui/base-utils';
+import { BaseButtonStyle, contentMinHeight, contentTop, contentWidth, TabBaseStyle, TabsBaseStyle } from '../../ui/base-utils';
 import { Page } from '../../utils/constants';
 import { MineArticles } from './Articles';
 import { mineCenterAvatarSize, mineCenterContentTop, mineCenterInfoContentSize, mineDetailContentWidth, mineDetailSiderWidth } from './constants';
@@ -37,7 +37,7 @@ export const Mine: FC = () => {
         navigate(`/${Page.Setting}`);
     };
     const toggleMore = () => setShowNum(prev => prev === infoList.length ? showInfoNum : infoList.length);
-    const infoList: Array<InfoItem> = [{
+    const infoList: Array<InfoItem> = useMemo(() => [{
         key: 'realname',
         iconComp: <BadgeIcon />,
     }, {
@@ -52,8 +52,8 @@ export const Mine: FC = () => {
     }, {
         key: 'desc',
         iconComp: <DescriptionIcon />,
-    }].filter(({ key }) => userInfo[key as keyof IUserInfo]);
-    const menuList = [{
+    }].filter(({ key }) => userInfo[key as keyof IUserInfo]), [userInfo]);
+    const menuList = useMemo(() => [{
         title: '文章',
         comp: <MineArticles filters={{ author: [userInfo.username] }} />
     }, {
@@ -61,7 +61,7 @@ export const Mine: FC = () => {
         comp: <MineArticles filters={{ collect: [true] }} />
     }, {
         title: '学习'
-    }];
+    }], [userInfo]);
     return (
         <Box sx={MineContainer}>
             <Box sx={ContentContainer}>
@@ -142,7 +142,7 @@ const BaseContainerStyle = {
 };
 
 const MineContainer = {
-    minHeight: '100%',
+    minHeight: contentMinHeight,
     padding: `${mineCenterContentTop}px 20px 20px`,
     backgroundColor: Palette.Fill.LightNormal,
 };

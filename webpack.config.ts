@@ -34,16 +34,11 @@ export default (
             open: true,
             historyApiFallback: true,
             proxy: {
-                '/jeecg-boot': {
-                    target: 'http://www.pifutan.com',
+                '/jeecg-system': {
+                    target: 'http://www.pifutan.com:9999',
                     secure: false,
                     changeOrigin: true,
                 },
-                '/upload': {
-                    target: 'http://localhost:3300/upload',
-                    secure: false,
-                    changeOrigin: true,
-                }
             },
         },
         plugins: (config.plugins ?? []).concat([

@@ -1,4 +1,5 @@
-import { Box, CircularProgress } from '@mui/material';
+import { Box } from '@mui/material';
+import { Empty, Spin } from 'antd';
 import { FC, useEffect, useState } from 'react';
 import { List } from '../../components/articles/List';
 import { useMessage } from '../../hooks/useMessage';
@@ -55,8 +56,11 @@ export const MineArticles: FC<{
     return (
         <Box sx={Container}>
             {!loading ?
-                <List list={list} total={total} loadMore={loadMore} /> :
-                <CircularProgress sx={LoadingStyle} />
+                (list.length ?
+                    <List list={list} total={total} loadMore={loadMore} />
+                    : <Empty style={{ padding: '32px 0' }} description={false} />
+                ) :
+                <Spin style={LoadingStyle} />
             }
         </Box>
     );

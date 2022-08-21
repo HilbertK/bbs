@@ -1,7 +1,7 @@
 
 import { defHttp } from '../utils/http';
 import { isDevelopment } from '../utils/util';
-import { CheckerParams, IUserInfo, LoginParams, LoginResultModel, RegisterParams, ThirdLoginParams } from './interface';
+import { CheckerParams, IUserInfo, LoginParams, LoginResultModel, RegisterParams, ThirdLoginParams, UploadAuthParams, UploadParams } from './interface';
 import { setAuthCache } from '../utils/auth';
 import { TOKEN_KEY } from '../utils/cache/enum';
 
@@ -29,10 +29,10 @@ enum Api {
     QueryDepartTreeSync = '/sys/sysDepart/queryDepartTreeSync',
     QueryTreeList = '/sys/sysDepart/queryTreeList',
     GetTableList = '/sys/user/queryUserComponentData',
-    minioUpload = '/sys/upload/uploadMinio',
+    GetUploadAuth = '/sys/upload/presignedUrl',
 }
 
-export const baseDomainUrl = isDevelopment ? 'http://localhost:8080/jeecg-boot' : 'https://www.pifutan.com/jeecg-boot';
+export const baseDomainUrl = isDevelopment ? 'http://localhost:8080/jeecg-system' : 'https://www.pifutan.com/jeecg-system';
 
 /**
  * 上传父路径
@@ -161,3 +161,7 @@ export const getFileblob = (url: string, parameter: any) => defHttp.get(
     },
     { isTransformResponse: false }
 );
+
+export const getUploadAuth = (params?: UploadAuthParams) => defHttp.get({ url: Api.GetUploadAuth, params });
+
+export const uploadFileWithPut = (params: UploadParams) => defHttp.UploadFileWithPut(params);

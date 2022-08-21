@@ -14,7 +14,7 @@ export interface InitialState {
 
 const initialState: InitialState = {
     userInfo: null,
-    token: null,
+    token: getToken() || null,
     sessionTimeout: false,
     loading: false,
 };
@@ -60,8 +60,8 @@ const slice = createSlice({
 
 export const logout = createAsyncThunk<any, boolean>(
     'user/logout',
-    async (goLogin: boolean, { getState, dispatch }) => {
-        const { token } = getState() as InitialState;
+    async (goLogin: boolean, { dispatch }) => {
+        const token = getToken();
         if (token) {
             try {
                 await doLogout();
@@ -73,6 +73,9 @@ export const logout = createAsyncThunk<any, boolean>(
         setAuthCache(TOKEN_KEY, null);
         dispatch(actions.setSessionTimeout(false));
         dispatch(actions.setUserInfo(null));
+        setTimeout(() => {
+            location.reload();
+        }, 300);
         if (goLogin) {
             // TODO: 调起登录
         }
@@ -94,7 +97,7 @@ export const login = createAsyncThunk<any, LoginParams & { onLogin: () => void }
             params.onLogin();
             setTimeout(() => {
                 location.reload();
-            }, 500);
+            }, 300);
         } catch (error) {
             // do nothing
         }

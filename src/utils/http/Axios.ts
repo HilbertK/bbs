@@ -9,6 +9,8 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { ContentTypeEnum, RequestEnum } from './enum';
 import { useMessage } from '../../hooks/useMessage';
 import { baseDomainUrl } from '../../service/api';
+import { RcFile } from 'antd/es/upload/interface';
+import { UploadParams } from '../../service/interface';
 
 const { createMessage } = useMessage();
 export * from './axiosTransform';
@@ -103,6 +105,21 @@ export class VAxios {
 
         // 响应结果拦截器错误捕获
         responseInterceptorsCatch && isFunction(responseInterceptorsCatch) && this.axiosInstance.interceptors.response.use(undefined, responseInterceptorsCatch);
+    }
+
+    // put方式：文件上传
+    UploadFileWithPut(params: UploadParams) {
+        return this.axiosInstance.put(params.url, params.file, {
+            headers: {
+                'Content-Type': params.file.type,
+            }
+        }).then((res: any) => {
+            console.log('上传成功', res);
+            return res;
+        }).catch((e: any) => {
+            console.error('上传失败', e);
+            return e;
+        });
     }
 
     /**

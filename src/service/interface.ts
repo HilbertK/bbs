@@ -77,6 +77,15 @@ export interface RegisterParams {
     phone?: string,
 }
 
+export interface UploadAuthParams {
+    fileName?: string,
+}
+
+export interface UploadParams {
+    file: any,
+    url: string,
+}
+
 export interface CheckerParams {
     username?: string,
     phone?: string,

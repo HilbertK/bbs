@@ -1,13 +1,13 @@
 import { Box, Button, SxProps, Theme as SxTheme } from '@mui/material';
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Font, Palette, RoundCorner, Shadow } from '../../base/style';
 import { DatePickerItem } from '../../components/form/DatePicker';
 import { InputItem } from '../../components/form/InputItem';
-import { Uploader } from '../../components/Uploader';
+import { ImgUploader } from '../../components/ImgUploader';
 import { checkPhone } from '../../service/api-utils';
 import { RootState } from '../../store';
-import { BaseButtonStyle, contentWidth, GrayOutlineButtonStyle } from '../../ui/base-utils';
+import { BaseButtonStyle, contentMinHeight, contentWidth, GrayOutlineButtonStyle } from '../../ui/base-utils';
 import { AvatarContainerStyle } from '../mine';
 import { mineCenterAvatarSize, mineCenterContentTop } from '../mine/constants';
 
@@ -26,7 +26,7 @@ export const Setting: FC = () => {
     const [itemValue, setItemValue] = useState<string>('');
     const [itemError, setItemError] = useState<string>('');
     if (userInfo == null) return null;
-    const infoList: Array<InfoItem> = [{
+    const infoList: Array<InfoItem> = useMemo(() => [{
         content: userInfo.username,
         key: 'username',
         style: NameStyle
@@ -92,7 +92,7 @@ export const Setting: FC = () => {
                     variant='outlined'
                     onChange={onChange}
                 />
-    }];
+    }], [userInfo]);
     const onEditClick = (index: number, content: string) => () => {
         setEditIndex(index);
         setItemValue(content);
@@ -115,7 +115,11 @@ export const Setting: FC = () => {
             <Box sx={ContentStyle}>
                 <Box sx={InfoContainer}>
                     <Box sx={AvatarContainer}>
-                        <Uploader maxCount={1} />
+                        <ImgUploader
+                            maxCount={1}
+                            defaultValue={userInfo.avatar}
+                            label='头像'
+                        />
                     </Box>
                     <Box sx={InfoContentStyle}>
                         {infoList.map(({ style, content, renderEditor, label, validator, key }, index) => (
@@ -164,7 +168,7 @@ export const Setting: FC = () => {
 const editButtonClassName = 'setting-edit-button';
 
 const ContainerStyle = {
-    minHeight: '100vh',
+    minHeight: contentMinHeight,
     padding: `${mineCenterContentTop}px 20px 20px`,
     backgroundColor: Palette.Fill.LightNormal,
 };

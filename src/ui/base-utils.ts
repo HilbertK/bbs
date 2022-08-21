@@ -94,6 +94,7 @@ export const GrayOutlineButtonStyle = {
 };
 
 export const contentWidth = calcWidth(1080);
+export const contentMinHeight = 'calc(100vh - 64px)';
 export const contentTop = calcWidth(32);
 export const blockSpacing = calcWidth(16);
 export const headerMenuHeight = 64;
