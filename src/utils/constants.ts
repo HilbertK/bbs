@@ -69,3 +69,13 @@ export const CategoryList = [
     CategoryDict[Category.Renshi],
     CategoryDict[Category.Qita],
 ];
+
+export enum SexEnum {
+    male = 1,
+    female = 2,
+}
+
+export const SexDict = {
+    [SexEnum.male]: '男',
+    [SexEnum.female]: '女',
+};

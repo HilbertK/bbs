@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IUserInfo, LoginParams, ThirdLoginParams } from '../service/interface';
-import { doLogout, getUserInfo, loginApi, thirdLogin } from '../service/api';
+import { doLogout, getUserInfo, loginApi, thirdLogin, updateUserInfo } from '../service/api';
 import { TOKEN_KEY, USER_INFO_KEY } from '../utils/cache/enum';
 import { getToken, setAuthCache } from '../utils/auth';
 import { useMessage } from '../hooks/useMessage';
@@ -116,6 +116,22 @@ export const getUserInfoAction = createAsyncThunk<any, undefined>(
             return res.userInfo;
         }
         return null;
+    }
+);
+
+export const updateUserInfoAction = createAsyncThunk<any, Partial<IUserInfo> & {
+    id: string | number,
+    onSuccess?: () => void,
+}>(
+    'user/update',
+    async (payload, { dispatch }) => {
+        await updateUserInfo(payload);
+        notification.success({ message: '更新成功' });
+        const res = await getUserInfo();
+        if (res && res.userInfo) {
+            dispatch(actions.setUserInfo(res.userInfo));
+        }
+        payload.onSuccess?.();
     }
 );
 

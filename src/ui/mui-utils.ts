@@ -28,6 +28,9 @@ export const Theme = createTheme({
                     minWidth: 'auto',
                     transitionProperty: 'color, background-color',
                     transitionDuration: '250ms',
+                    '&.MuiButton-contained:hover': {
+                        backgroundColor: Palette.Brand.Hover
+                    },
                 },
             },
         },

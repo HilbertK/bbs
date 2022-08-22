@@ -1,27 +1,38 @@
 import { Box, Button, SxProps, Theme as SxTheme } from '@mui/material';
+import { Dispatch } from '@reduxjs/toolkit';
 import { FC, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Font, Palette, RoundCorner, Shadow } from '../../base/style';
 import { DatePickerItem } from '../../components/form/DatePicker';
 import { InputItem } from '../../components/form/InputItem';
+import { RadioItem } from '../../components/form/RadioItem';
 import { ImgUploader } from '../../components/ImgUploader';
 import { checkPhone } from '../../service/api-utils';
+import { IUserInfo } from '../../service/interface';
 import { RootState } from '../../store';
+import { updateUserInfoAction } from '../../store/user-slice';
 import { BaseButtonStyle, contentMinHeight, contentWidth, GrayOutlineButtonStyle } from '../../ui/base-utils';
+import { SexDict, SexEnum } from '../../utils/constants';
 import { AvatarContainerStyle } from '../mine';
 import { mineCenterAvatarSize, mineCenterContentTop } from '../mine/constants';
 
 interface InfoItem {
     label?: string,
-    key?: string,
+    key: string,
     content: string,
     style: SxProps<SxTheme>,
     validator?: (value: any) => Promise<string>,
-    renderEditor?: (value: any, onChange: (value: any) => void, error: string) => JSX.Element
+    renderViewer?: (value: any) => JSX.Element | string,
+    renderEditor?: (
+        value: any,
+        onChange: (value: any) => void | Promise<void>,
+        error: string
+    ) => JSX.Element,
 }
 
 export const Setting: FC = () => {
     const userInfo = useSelector((state: RootState) => state.user.userInfo);
+    const dispatch: Dispatch<any> = useDispatch();
     const [editIndex, setEditIndex] = useState<number | null>(null);
     const [itemValue, setItemValue] = useState<string>('');
     const [itemError, setItemError] = useState<string>('');
@@ -30,6 +41,21 @@ export const Setting: FC = () => {
         content: userInfo.username,
         key: 'username',
         style: NameStyle
+    }, {
+        label: '真实名称',
+        key: 'realname',
+        content: userInfo.realname ?? '',
+        style: TextStyle,
+        renderEditor:
+            (value, onChange, error) =>
+                <InputItem
+                    label='真实名称'
+                    sx={TextInputStyle}
+                    error={error}
+                    value={value}
+                    variant='outlined'
+                    onChange={onChange}
+                />
     }, {
         label: '手机号',
         key: 'phone',
@@ -71,7 +97,30 @@ export const Setting: FC = () => {
             (value, onChange, error) =>
                 <DatePickerItem
                     label='生日'
-                    sx={TextInputStyle}
+                    sx={{
+                        ...TextInputStyle,
+                        paddingBottom: '20px'
+                    }}
+                    value={value}
+                    onChange={onChange}
+                />
+    }, {
+        label: '性别',
+        key: 'sex',
+        content: userInfo.sex?.toString() ?? '',
+        renderViewer: (value: any) => SexDict[value as SexEnum] ?? '',
+        style: TextStyle,
+        renderEditor:
+            (value, onChange) =>
+                <RadioItem
+                    sx={{
+                        ...TextInputStyle,
+                        paddingBottom: '20px'
+                    }}
+                    radioList={[
+                        { value: SexEnum.male, label: SexDict[SexEnum.male] },
+                        { value: SexEnum.female, label: SexDict[SexEnum.female] },
+                    ]}
                     value={value}
                     onChange={onChange}
                 />
@@ -97,19 +146,34 @@ export const Setting: FC = () => {
         setEditIndex(index);
         setItemValue(content);
     };
-    const onConfirmEdit = (validator: InfoItem['validator'], key?: string) => async () => {
-        if (!key) return;
-        let errorText = '';
-        if (validator) {
-            errorText = await validator(itemValue);
-        }
-        if (errorText !== '') {
+    const onItemValueChange = (validator: InfoItem['validator'], key: string) => async (value: any) => {
+        if (validator && value !== userInfo[key as keyof IUserInfo]) {
+            const errorText = await validator(value);
             setItemError(errorText);
-            return;
+        } else {
+            setItemError('');
         }
+        setItemValue(value);
+    };
+    const onConfirmEdit = (key: string) => () => {
+        if (itemError) return;
+        dispatch(updateUserInfoAction({
+            id: userInfo.id,
+            [key]: itemValue,
+            onSuccess: () => {
+                setItemValue('');
+                onCancelEdit();
+            }
+        }));
+    };
+    const onCancelEdit = () => {
+        setEditIndex(null);
+        setItemError('');
         setItemValue('');
     };
-    const onCancelEdit = () => setEditIndex(null);
+    const onUploaded = (url: string) => {
+        dispatch(updateUserInfoAction({ id: userInfo.id, avatar: url}));
+    };
     return (
         <Box sx={ContainerStyle}>
             <Box sx={ContentStyle}>
@@ -119,10 +183,19 @@ export const Setting: FC = () => {
                             maxCount={1}
                             defaultValue={userInfo.avatar}
                             label='头像'
+                            onUploaded={onUploaded}
                         />
                     </Box>
                     <Box sx={InfoContentStyle}>
-                        {infoList.map(({ style, content, renderEditor, label, validator, key }, index) => (
+                        {infoList.map(({
+                            style,
+                            content,
+                            renderEditor,
+                            label,
+                            validator,
+                            key,
+                            renderViewer = (value: any) => value,
+                        }, index) => (
                             <Box key={key} sx={InfoItemStyle}>
                                 {editIndex !== index || !renderEditor ? (
                                     <>
@@ -130,7 +203,7 @@ export const Setting: FC = () => {
                                             ...style,
                                             ...LabelStyle,
                                         }}>{label}</Box>}
-                                        <Box sx={style}>{content}</Box>
+                                        <Box sx={style}>{renderViewer(content)}</Box>
                                         {renderEditor && <Box
                                             className={editButtonClassName}
                                             onClick={onEditClick(index, content)}
@@ -138,12 +211,13 @@ export const Setting: FC = () => {
                                     </>
                                 ) : (
                                     <Box sx={EditorStyle}>
-                                        {renderEditor(itemValue, setItemValue, itemError)}
+                                        {renderEditor(itemValue, onItemValueChange(validator, key), itemError)}
                                         <Box sx={ButtonGroupStyle}>
                                             <Button
                                                 variant='contained'
                                                 sx={BaseButtonStyle}
-                                                onClick={onConfirmEdit(validator, key)}
+                                                disabled={itemError !== ''}
+                                                onClick={onConfirmEdit(key)}
                                             >保存</Button>
                                             <Button
                                                 sx={{
@@ -220,9 +294,6 @@ const InfoItemStyle = {
 
 const EditorStyle = {
     marginTop: '10px',
-    '& .MuiTextField-root': {
-        paddingBottom: 0,
-    },
 };
 
 const LabelStyle = {
@@ -245,9 +316,7 @@ const TextStyle = {
     color: Palette.Text.Text,
 };
 
-const ButtonGroupStyle = {
-    marginTop: '20px',
-};
+const ButtonGroupStyle = {};
 
 const TextInputStyle = {
     '& .MuiInputBase-root' :TextStyle,

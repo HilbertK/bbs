@@ -152,12 +152,12 @@ class MockService {
         return `user-${uuid().slice(-this.LongRandomLength)}`;
     }
 
-    private setStorageUser(userInfo: Omit<SignupUser, 'userId'>) {
+    private setStorageUser(userInfo: Omit<SignupUser, 'id'>) {
         const newUserId = this.generateUserId();
         const allUsers = this.getStorageSignupUsers();
         const newUser: SignupUser = {
             ...userInfo,
-            userId: newUserId,
+            id: newUserId,
         };
         localStorage.setItem(this.storeSignupUsersKey, JSON.stringify([...allUsers, newUser]));
         return newUserId;
@@ -200,8 +200,8 @@ class MockService {
             setTimeout(() => {
                 const loginUser = allUsers.find(item => item.username === username && item.password === password);
                 if (loginUser) {
-                    const { userId, username, avatar } = loginUser;
-                    this.setStorageCurrUser({userId, username, avatar});
+                    const { id, username, avatar } = loginUser;
+                    this.setStorageCurrUser({id, username, avatar});
                     resolve(loginUser);
                 } else {
                     reject('用户名或密码错误');
@@ -213,7 +213,7 @@ class MockService {
     public signup(username: string, password: string) {
         return new Promise((resolve) => {
             setTimeout(() => {
-                const baseUser: Omit<IUserInfo, 'userId' | 'roles' | 'realname'> = {
+                const baseUser: Omit<IUserInfo, 'id' | 'roles' | 'realname'> = {
                     username,
                     avatar: '',
                 };

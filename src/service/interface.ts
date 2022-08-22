@@ -116,13 +116,14 @@ export interface LoginResultModel {
 export interface IUserInfo {
     roles: RoleInfo[],
     // 用户id
-    userId: string | number,
+    id: string | number,
     // 用户名
     username: string,
     // 真实名字
     realname: string,
     // 头像
     avatar: string,
+    sex?: number,
     // 介绍
     desc?: string,
     email?: string,

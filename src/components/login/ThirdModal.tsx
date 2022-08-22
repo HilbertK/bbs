@@ -42,7 +42,7 @@ export const ThirdModal: FC = () => {
                         cursor: 'pointer',
                     },
                     '&:hover': {
-                        background: Palette.Brand.Clicked,
+                        background: Palette.Brand.Normal,
                     }
                 }}
             >

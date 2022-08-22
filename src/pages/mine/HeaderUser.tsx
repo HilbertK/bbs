@@ -1,5 +1,5 @@
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Avatar } from '../../components/avatar/Avatar';
@@ -20,7 +20,7 @@ export const HeaderUser: FC<{
     const [loginOpen, setLoginOpen] = useState<boolean>(false);
     const userInfo = useSelector((state: RootState) => state.user.userInfo);
     const navigate = useNavigate();
-    const mineMenu = subRoutes.map((subRoute, index) => ({
+    const mineMenu = useMemo(() => subRoutes.map((subRoute, index) => ({
         ...subRoute,
         handler: () => {
             const { type, link } = subRoute;
@@ -35,7 +35,7 @@ export const HeaderUser: FC<{
             onRouteChange();
             navigate(link);
         },
-    }));
+    })), []);
     const findActiveIndex = () => mineMenu.findIndex(item => `${location.pathname}${location.search}` === item.link);
     const [menuVisible, setMenuVisible] = useState<boolean>(false);
     const [activeIndex, setActiveIndex] = useState<number>(findActiveIndex);
@@ -52,15 +52,15 @@ export const HeaderUser: FC<{
         setMenuVisible(true);
     };
     const onLoginModalClose = () => setLoginOpen(false);
-    const renderAvatar = () => (
+    const renderAvatar = useMemo(() => (
         <Avatar
             url={userInfo?.avatar ?? ''}
             name={userInfo?.username ?? '登录'}
         />
-    );
+    ), [userInfo]);
     return (
         <Box>
-            <Box sx={AvatarWrapperStyle} onClick={openHandler}>{renderAvatar()}</Box>
+            <Box sx={AvatarWrapperStyle} onClick={openHandler}>{renderAvatar}</Box>
             <Login open={loginOpen} onClose={onLoginModalClose} />
             <Drawer
                 anchor='right'
@@ -75,7 +75,7 @@ export const HeaderUser: FC<{
             >
                 <Box sx={drawerHeader}>
                     <Box sx={drawerHeaderText}>{userInfo?.username}</Box>
-                    {renderAvatar()}
+                    {renderAvatar}
                 </Box>
                 <List>
                     {mineMenu.map(({ title, handler, iconComp }, index) => (

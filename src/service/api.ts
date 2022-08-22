@@ -30,6 +30,8 @@ enum Api {
     QueryTreeList = '/sys/sysDepart/queryTreeList',
     GetTableList = '/sys/user/queryUserComponentData',
     GetUploadAuth = '/sys/upload/presignedUrl',
+    // 用户相关
+    EditUserInfo = '/sys/user/appEdit',
 }
 
 export const baseDomainUrl = isDevelopment ? 'http://localhost:8080/jeecg-system' : 'https://www.pifutan.com/jeecg-system';
@@ -165,3 +167,6 @@ export const getFileblob = (url: string, parameter: any) => defHttp.get(
 export const getUploadAuth = (params?: UploadAuthParams) => defHttp.get({ url: Api.GetUploadAuth, params });
 
 export const uploadFileWithPut = (params: UploadParams) => defHttp.UploadFileWithPut(params);
+
+export const updateUserInfo =
+    (params: Partial<IUserInfo> & { id: string | number }) => defHttp.post({ url: Api.EditUserInfo, params });

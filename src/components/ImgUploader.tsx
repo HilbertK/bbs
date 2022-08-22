@@ -14,7 +14,7 @@ export const ImgUploader: React.FC<{
     maxCount: number,
     defaultValue?: string,
     label: string,
-    onUploaded?: (url: string) => Promise<void>,
+    onUploaded?: (url: string) => Promise<void> | void,
 }> = props => {
     const { maxCount, defaultValue, label, onUploaded } = props;
     const [loading, setLoading] = useState<boolean>(false);
@@ -136,7 +136,7 @@ const ButtonStyle = {
     ...ContentCenterStyle,
     fontSize: '30px',
     flexDirection: 'column',
-    background: 'rgba(0,0,0,0.6)',
+    background: 'rgba(98, 110, 133, .5)',
     position: 'absolute',
     left: 0,
     top: 0,

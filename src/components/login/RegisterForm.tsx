@@ -5,8 +5,6 @@ import { FormItemType } from '../form/constants';
 import { Form, IFormItem } from '../form/Form';
 import { checkPhone, checkUsername } from '../../service/api-utils';
 
-const userTypeId = 'usertype';
-
 const registerFormItems: Array<IFormItem> = [
     {
         id: 'username',

@@ -1,4 +1,4 @@
-import { FormControl, Radio, RadioGroup, FormControlLabel } from '@mui/material';
+import { FormControl, Radio, RadioGroup, FormControlLabel, SxProps, Theme } from '@mui/material';
 import { FC, useCallback } from 'react';
 import { Font, Palette } from '../../base/style';
 
@@ -13,18 +13,20 @@ interface IRadioItemProps {
     value: RadioItemValue,
     radioList: Array<IRadioItem>,
     onChange: (value: RadioItemValue) => void,
+    sx?: SxProps<Theme>,
 }
 
 export const RadioItem: FC<IRadioItemProps> = ({
     value,
     radioList,
-    onChange
+    onChange,
+    sx = {},
 }) => {
     const onRadioChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.value);
     }, [onChange]);
     return (
-        <FormControl sx={{width: '100%'}}>
+        <FormControl sx={sx}>
             <RadioGroup
                 sx={{
                     display: 'flex',

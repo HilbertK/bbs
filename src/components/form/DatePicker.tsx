@@ -31,7 +31,7 @@ export const DatePickerItem: FC<{
             adapterLocale={zhLocale}
         >
             <DesktopDatePicker
-                inputFormat={dateFormat}
+                inputFormat='yyyy-MM-dd'
                 label={label}
                 value={content}
                 onChange={onChangeHandler}

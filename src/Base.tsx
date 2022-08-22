@@ -131,7 +131,7 @@ const TabBaseStyle = {
         background: Palette.Brand.Normal,
     },
     '&:hover': {
-        color: Palette.Brand.Clicked,
+        color: Palette.Brand.Hover,
     },
     '&.Mui-selected:hover': {
         color: '#fff'

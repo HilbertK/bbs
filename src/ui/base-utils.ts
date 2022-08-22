@@ -68,9 +68,12 @@ export const TabBaseStyle = {
         color: Palette.Brand.Clicked
     },
     '&:hover': {
-        color: Palette.Brand.Clicked,
+        color: Palette.Brand.Hover,
         opacity: 1
-    }
+    },
+    '&.Mui-selected:hover': {
+        color: Palette.Brand.Clicked
+    },
 };
 
 export const TabsBaseStyle = {

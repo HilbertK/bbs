@@ -10,20 +10,27 @@ interface IAvatar {
     isRound?: boolean,
 }
 
-export const Avatar: React.FunctionComponent<IAvatar> = React.memo(
-    ({ url, name, size = defaultAvatarSize, avatarColor = '', isRound = true }) => {
-        const [error, setError] = useState<boolean>(false);
-        const onImgError = useCallback(() => {
-            setError(true);
-        }, []);
-        return (
-            <AvatarWrapper size={size} isRound={isRound}>
-                {url && !error && <AvatarImg size={size} isRound={isRound} src={url} onError={onImgError} />}
+export const Avatar: React.FC<IAvatar> = ({
+    url,
+    name,
+    size = defaultAvatarSize,
+    avatarColor = '',
+    isRound = true
+}) => {
+    const [error, setError] = useState<boolean>(false);
+    const onImgError = useCallback(() => {
+        setError(true);
+    }, []);
+    return (
+        <AvatarWrapper size={size} isRound={isRound}>
+            {
+                (url && !error) ?
+                <AvatarImg size={size} isRound={isRound} src={url} onError={onImgError} /> :
                 <DefaultAvatar name={name} avatarColor={avatarColor} size={size} isRound={isRound} />
-            </AvatarWrapper>
-        );
-    }
-);
+            }
+        </AvatarWrapper>
+    );
+};
 const AvatarWrapper = styled.div<{
     size: number,
     isRound: boolean,

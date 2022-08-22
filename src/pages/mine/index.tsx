@@ -8,11 +8,12 @@ import PhoneIcon from '@mui/icons-material/StayCurrentPortrait';
 import CakeIcon from '@mui/icons-material/Cake';
 import EmailIcon from '@mui/icons-material/Email';
 import DescriptionIcon from '@mui/icons-material/Description';
+import WcIcon from '@mui/icons-material/Wc';
 import { Font, Palette, RoundCorner, Shadow } from '../../base/style';
 import { Avatar } from '../../components/avatar/Avatar';
 import { RootState } from '../../store';
 import { BaseButtonStyle, contentMinHeight, contentTop, contentWidth, TabBaseStyle, TabsBaseStyle } from '../../ui/base-utils';
-import { Page } from '../../utils/constants';
+import { Page, SexDict, SexEnum } from '../../utils/constants';
 import { MineArticles } from './Articles';
 import { mineCenterAvatarSize, mineCenterContentTop, mineCenterInfoContentSize, mineDetailContentWidth, mineDetailSiderWidth } from './constants';
 import { IUserInfo } from '../../service/interface';
@@ -20,6 +21,7 @@ import { IUserInfo } from '../../service/interface';
 interface InfoItem {
     key: string,
     iconComp: JSX.Element,
+    renderViewer?: (value: any) => JSX.Element | string,
 }
 
 const showInfoNum = 2;
@@ -49,6 +51,10 @@ export const Mine: FC = () => {
     }, {
         key: 'birthday',
         iconComp: <CakeIcon />,
+    }, {
+        key: 'sex',
+        iconComp: <WcIcon />,
+        renderViewer: (value: any) => SexDict[value as SexEnum],
     }, {
         key: 'desc',
         iconComp: <DescriptionIcon />,
@@ -81,13 +87,13 @@ export const Mine: FC = () => {
                             transition: 'height ease .5s',
                             overflow: 'hidden'
                         }}>
-                            {infoList.map(({ key, iconComp }, index) => (
+                            {infoList.map(({ key, iconComp, renderViewer = (value: any) => value }, index) => (
                                 <Box key={key} sx={{
                                     ...InfoItemStyle,
                                     opacity: index >= showNum ? 0 : 1,
                                 }}>
                                     {iconComp}
-                                    <Box sx={TextContentStyle}>{userInfo[key as keyof IUserInfo]}</Box>
+                                    <Box sx={TextContentStyle}>{renderViewer(userInfo[key as keyof IUserInfo])}</Box>
                                 </Box>
                             ))}
                         </Box>
