@@ -1,6 +1,5 @@
 import { Button, TextFieldProps } from '@mui/material';
 import Box from '@mui/material/Box';
-import { DatePicker } from 'antd';
 import { FC, useState } from 'react';
 import { SubmitButtonStyle } from '../login/constants';
 import { FormItemType } from './constants';
@@ -13,14 +12,13 @@ interface BaseFormItem {
     label: string,
     type: FormItemType,
     linkId?: string,
-    validator?: (value: any) => Promise<string>,
+    validator?: (value: any) => Promise<string> | string,
     required: boolean,
     default?: FromValueContent,
 }
 
 type IFormInputItem = BaseFormItem & {
     type: FormItemType.Text | FormItemType.Password | FormItemType.Num,
-    maxLength: number,
     variant?: TextFieldProps['variant'],
 };
 
@@ -102,12 +100,6 @@ export const Form: FC<{
         } else if (currItem.linkId && newFormValue.value !== result[currItem.linkId]?.value) {
             const linkItem = items.find(item => item.id === currItem.linkId)!;
             newFormValue.error = `两次输入${linkItem.label}不一致`;
-        } else if (
-            validInputText(newFormValue.value)
-            && (currItem as IFormInputItem).maxLength
-            && newFormValue.value.length > (currItem as IFormInputItem).maxLength
-        ) {
-            newFormValue.value = newFormValue.value.slice(0, (currItem as IFormInputItem).maxLength);
         } else if (currItem.validator) {
             const errorText = await currItem.validator(newFormValue.value);
             newFormValue.error = errorText;

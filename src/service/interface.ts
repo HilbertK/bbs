@@ -125,7 +125,7 @@ export interface IUserInfo {
     avatar: string,
     sex?: number,
     // 介绍
-    desc?: string,
+    description?: string,
     email?: string,
     phone?: string,
     birthday?: string,

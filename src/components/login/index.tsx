@@ -18,12 +18,18 @@ export const Login: FC<{
     const onTabClickHandler = (index: number) => () => {
         setCheckedTabs(index);
     };
+    const onCloseHandler = () => {
+        setCheckedTabs(0);
+        onClose();
+    };
     return (
         <AModal
+            destroyOnClose
+            maskClosable={false}
             visible={open}
             footer={null}
             centered
-            onCancel={onClose}
+            onCancel={onCloseHandler}
             width={loginContentWidth}
         >
             <Box sx={Content}>
@@ -37,7 +43,7 @@ export const Login: FC<{
                         />
                     ))}
                 </Tabs>
-                {checkedTabs === 0 ? <LoginForm onLogin={onClose} /> : <RegisterForm onRegister={onClose} />}
+                {checkedTabs === 0 ? <LoginForm onLogin={onCloseHandler} /> : <RegisterForm onRegister={onCloseHandler} />}
             </Box>
         </AModal>
     );

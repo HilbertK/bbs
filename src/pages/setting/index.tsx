@@ -126,8 +126,8 @@ export const Setting: FC = () => {
                 />
     }, {
         label: '个人简介',
-        key: 'desc',
-        content: userInfo.desc ?? '',
+        key: 'description',
+        content: userInfo.description ?? '',
         style: DescStyle,
         renderEditor:
             (value, onChange, error) =>
@@ -180,7 +180,6 @@ export const Setting: FC = () => {
                 <Box sx={InfoContainer}>
                     <Box sx={AvatarContainer}>
                         <ImgUploader
-                            maxCount={1}
                             defaultValue={userInfo.avatar}
                             label='头像'
                             onUploaded={onUploaded}

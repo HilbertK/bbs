@@ -10,7 +10,6 @@ export default (
         mode?: 'production', // 模式
         config: Array<string>, // 配置文件
         env: Record<string, unknown>, // 环境变量
-        basename?: string,
     },
 ) => {
     const config = generateConfiguration(

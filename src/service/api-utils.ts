@@ -1,11 +1,16 @@
 import { checkOnlyUser } from './api';
 
 export const checkUsername = async (value: string) => {
-    try {
-        const res = await checkOnlyUser({ username: value });
-        return res.success ? '' : '账号已存在';
-    } catch {
-        return '账号输入有误';
+    const maxLength = 20;
+    if (value.length > maxLength) {
+        return Promise.resolve(`输入长度不得超过${maxLength}`);
+    } else {
+        try {
+            const res = await checkOnlyUser({ username: value });
+            return res.success ? '' : '账号已存在';
+        } catch {
+            return '账号输入有误';
+        }
     }
 };
 
@@ -20,5 +25,13 @@ export const checkPhone = async (value: string) => {
         } catch {
             return '手机号输入有误';
         }
+    }
+};
+
+export const generateLengthChecker = (maxLength: number) => (value: string) => {
+    if (value.length > maxLength) {
+        return `输入长度不得超过${maxLength}}`;
+    } else {
+        return '';
     }
 };

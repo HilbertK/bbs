@@ -3,7 +3,7 @@ import _debounce from 'lodash-es/debounce';
 import { register } from '../../service/api';
 import { FormItemType } from '../form/constants';
 import { Form, IFormItem } from '../form/Form';
-import { checkPhone, checkUsername } from '../../service/api-utils';
+import { checkPhone, checkUsername, generateLengthChecker } from '../../service/api-utils';
 
 const registerFormItems: Array<IFormItem> = [
     {
@@ -12,33 +12,31 @@ const registerFormItems: Array<IFormItem> = [
         validator: checkUsername,
         required: true,
         type: FormItemType.Text,
-        maxLength: 20,
     }, {
         id: 'password',
         label: '密码',
+        validator: generateLengthChecker(30),
         required: true,
         type: FormItemType.Password,
-        maxLength: 50,
     }, {
         id: 'confirm_password',
         label: '确认密码',
+        validator: generateLengthChecker(30),
         required: true,
         type: FormItemType.Password,
         linkId: 'password',
-        maxLength: 50,
     }, {
         id: 'realname',
         label: '真实名称',
+        validator: generateLengthChecker(10),
         required: true,
         type: FormItemType.Text,
-        maxLength: 20,
     }, {
         id: 'phone',
         label: '手机号',
         validator: checkPhone,
         required: true,
         type: FormItemType.Text,
-        maxLength: 11,
     }
 ];
 

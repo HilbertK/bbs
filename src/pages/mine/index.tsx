@@ -56,7 +56,7 @@ export const Mine: FC = () => {
         iconComp: <WcIcon />,
         renderViewer: (value: any) => SexDict[value as SexEnum],
     }, {
-        key: 'desc',
+        key: 'description',
         iconComp: <DescriptionIcon />,
     }].filter(({ key }) => userInfo[key as keyof IUserInfo]), [userInfo]);
     const menuList = useMemo(() => [{
