@@ -146,6 +146,10 @@ export const thirdLoginAction = createAsyncThunk<any, ThirdLoginParams>(
             if (sessionTimeout) {
                 dispatch(actions.setSessionTimeout(false));
             }
+            notification.success({ message: '登录成功' });
+            setTimeout(() => {
+                location.reload();
+            }, 300);
         } catch (err: any) {
             console.error(err);
             requestFailed(err);

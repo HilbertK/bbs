@@ -15,6 +15,7 @@ import isString from 'lodash-es/isString';
 import { getArticleLink } from '../../utils/util';
 import { catalogWidth } from '../article/constants';
 import { useMessage } from '../../hooks/useMessage';
+import { ArticleParams } from '../../service/interface';
 
 export const Publish: FC = () => {
     const [content, setContent] = useState<string>(publishStorageService.getStoragePublishArticle()?.data ?? '');
@@ -37,30 +38,31 @@ export const Publish: FC = () => {
         });
         setHeadingList(newHeadingList);
     };
-    const storeArticle = () => {
+    const storeArticle = (params: Partial<ArticleParams>) => {
         publishStorageService.setContentStorage({
             category,
             title,
             description,
             data: content,
+            ...params,
         });
     };
     const setEditorContent = (newContent: string) => {
         setContent(newContent);
-        storeArticle();
+        storeArticle({ data: newContent });
         generateCatalog();
     };
     const setTitleWithStorage = (newValue: string) => {
         setTitle(newValue);
-        storeArticle();
+        storeArticle({ title: newValue });
     };
     const setDescriptionWithStorage = (newValue: string) => {
         setDescription(newValue);
-        storeArticle();
+        storeArticle({ description: newValue });
     };
     const setCategoryWithStorage = (newValue: string[]) => {
         setCategory(newValue);
-        storeArticle();
+        storeArticle({ category: newValue });
     };
     const onPublish = useCallback(async () => {
         if (title === '') {

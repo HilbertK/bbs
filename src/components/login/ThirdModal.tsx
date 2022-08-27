@@ -1,6 +1,6 @@
 import { Box, TextField } from '@mui/material';
 import { Button, Modal } from 'antd';
-import { ChangeEventHandler, FC } from 'react';
+import { ChangeEventHandler, FC, useState } from 'react';
 import { useThirdLogin } from '../../hooks/useThirdLogin';
 import { InputTextStyle } from './constants';
 import { Palette } from '../../base/style';
@@ -19,10 +19,21 @@ export const ThirdModal: FC = () => {
         thirdLoginUserBind,
         setThirdLoginPassword,
         onThirdLogin,
+        bindingPhoneModal,
+        thirdHandlerOk,
+        setThirdPhone,
+        thirdPhone,
+        checkPhone,
     } = useThirdLogin();
+    const [phoneError, setPhoneError] = useState<string>('');
     const onPasswordChange: ChangeEventHandler<HTMLInputElement> = event => {
         const newValue = event.target.value;
         setThirdLoginPassword(newValue);
+    };
+    const onPhoneChange: ChangeEventHandler<HTMLInputElement> = event => {
+        const newValue = event.target.value;
+        setPhoneError(checkPhone(newValue));
+        setThirdPhone(newValue);
     };
     const onQWThirdLogin = () => onThirdLogin('wechat_enterprise');
     return (
@@ -58,7 +69,6 @@ export const ThirdModal: FC = () => {
                     maxRows={1}
                     sx={{
                         ...InputTextStyle,
-                        margin: '15px',
                         width: '80%'
                     }}
                     type='password'
@@ -86,6 +96,31 @@ export const ThirdModal: FC = () => {
                     </Box>
                 </Box>
             </Modal>
-        </Box>
+            <Modal
+                title="绑定手机号"
+                footer={null}
+                visible={bindingPhoneModal}
+                maskClosable={false}
+            >
+                <TextField
+                    size='medium'
+                    placeholder="请输入手机号"
+                    maxRows={1}
+                    sx={{
+                        ...InputTextStyle,
+                        display: 'block',
+                        width: '80%'
+                    }}
+                    error={Boolean(phoneError)}
+                    helperText={phoneError}
+                    type='text'
+                    label='手机号'
+                    value={thirdPhone}
+                    variant='standard'
+                    onChange={onPhoneChange}
+                />
+                <Button type="primary" onClick={thirdHandlerOk}>确定</Button>
+            </Modal >
+        </Box >
     );
 };

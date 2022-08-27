@@ -1,21 +1,21 @@
 import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
 import { Box } from '@mui/material';
 import { Upload } from 'antd';
+import type { UploadProps, UploadFileStatus } from 'antd/es/upload/interface';
 import React, { useMemo, useState } from 'react';
 import { Font } from '../base/style';
 import { useUpload } from '../hooks/useUpload';
 import { ContentCenterStyle } from '../ui/base-utils';
 
+const { Dragger } = Upload;
 export const FileUploader: React.FC<{
     maxCount: number,
     defaultValue?: string,
     label: string,
     onUploaded?: (url: string) => Promise<void> | void,
+    onFileChange: (status: UploadFileStatus) => void,
 }> = props => {
-    const { maxCount, label, onUploaded } = props;
-    const onUploadedHander = async (url: string) => {
-        await onUploaded?.(url);
-    };
+    const { maxCount, label, onUploaded, onFileChange } = props;
     const {
         uploading,
         onChange,
@@ -23,18 +23,23 @@ export const FileUploader: React.FC<{
         onCustomRequest,
         beforeUpload,
     } = useUpload({
-        onUploaded: onUploadedHander,
+        onUploaded,
         maxSize: 2000,
     });
 
+    const onChangeHandler: UploadProps['onChange'] = info => {
+        if (info.file.status) onFileChange(info.file.status);
+        onChange(info);
+    };
+
     return (
-        <Upload
+        <Dragger
             beforeUpload={beforeUpload}
             method='PUT'
             maxCount={maxCount}
             customRequest={onCustomRequest}
             action={getUploadUrl}
-            onChange={onChange}
+            onChange={onChangeHandler}
             showUploadList={maxCount > 1}
         >
             <Box sx={ContentStyle}>
@@ -42,7 +47,7 @@ export const FileUploader: React.FC<{
                     {uploading ? <LoadingOutlined /> : <UploadOutlined />}
                 </Box>
             </Box>
-        </Upload>
+        </Dragger>
     );
 };
 
