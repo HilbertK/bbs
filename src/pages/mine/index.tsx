@@ -55,9 +55,6 @@ export const Mine: FC = () => {
         key: 'sex',
         iconComp: <WcIcon />,
         renderViewer: (value: any) => SexDict[value as SexEnum],
-    }, {
-        key: 'description',
-        iconComp: <DescriptionIcon />,
     }].filter(({ key }) => userInfo[key as keyof IUserInfo]), [userInfo]);
     const menuList = useMemo(() => [{
         title: '文章',
@@ -133,7 +130,12 @@ export const Mine: FC = () => {
                         {menuList.find((item, index) => index === checkedTab)!.comp}
                     </Box>
                     <Box sx={SiderContainer}>
-                        <Box></Box>
+                        {Boolean(userInfo.appearance) &&
+                            <Box component='img' src={userInfo.appearance} sx={AppearanceStyle} />
+                        }
+                        {Boolean(userInfo.description) &&
+                            <Box sx={DescriptionStyle}>{userInfo.description}</Box>
+                        }
                     </Box>
                 </Box>
             </Box>
@@ -246,4 +248,16 @@ const TabsContainer = {
 const SiderContainer = {
     ...BaseContainerStyle,
     width: `${mineDetailSiderWidth}px`,
+    padding: '32px'
+};
+
+const AppearanceStyle = {
+    width: '100%',
+    height: 'auto'
+};
+
+const DescriptionStyle = {
+    ...Font.TitleLarge,
+    color: Palette.Fill.Emphasize,
+    marginTop: '10px'
 };

@@ -126,6 +126,8 @@ export interface IUserInfo {
     sex?: number,
     // 介绍
     description?: string,
+    // 形象照
+    appearance?: string,
     email?: string,
     phone?: string,
     birthday?: string,

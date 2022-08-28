@@ -11,8 +11,10 @@ export const ImgUploader: React.FC<{
     defaultValue?: string,
     label: string,
     onUploaded?: (url: string) => Promise<void> | void,
+    maxSize?: number,
+    aspect?: number
 }> = props => {
-    const { defaultValue, label, onUploaded } = props;
+    const { defaultValue, label, onUploaded, maxSize = 1, aspect = 1 } = props;
     const [imageUrl, setImageUrl] = useState<string>(defaultValue ?? '');
     const [loading, setLoading] = useState<boolean>(false);
     const onUploadedHander = async (url: string) => {
@@ -28,7 +30,7 @@ export const ImgUploader: React.FC<{
         beforeUpload,
     } = useUpload({
         onUploaded: onUploadedHander,
-        maxSize: 20,
+        maxSize,
     });
 
     const uploadText = useMemo(() => {
@@ -40,7 +42,7 @@ export const ImgUploader: React.FC<{
     const stopLoading = () => setLoading(false);
 
     return (
-        <ImgCrop rotate>
+        <ImgCrop rotate aspect={aspect}>
             <Upload
                 beforeUpload={beforeUpload}
                 method='PUT'

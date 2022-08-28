@@ -20,6 +20,9 @@ class UploadManager extends EventEmitter {
         label: string,
         onUploaded: (url: string) => Promise<void> | void,
     ) => {
+        if (this.modalMap[key]) {
+            this.modalMap[key].destroy();
+        }
         this.modalMap[key] = Modal.confirm({
             content: <FileUploader
                 maxCount={1}

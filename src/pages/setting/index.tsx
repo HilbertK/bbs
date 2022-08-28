@@ -11,7 +11,7 @@ import { checkPhone } from '../../service/api-utils';
 import { IUserInfo } from '../../service/interface';
 import { RootState } from '../../store';
 import { updateUserInfoAction } from '../../store/user-slice';
-import { BaseButtonStyle, contentMinHeight, contentWidth, GrayOutlineButtonStyle } from '../../ui/base-utils';
+import { appearanceAspect, BaseButtonStyle, contentMinHeight, contentWidth, GrayOutlineButtonStyle } from '../../ui/base-utils';
 import { SexDict, SexEnum } from '../../utils/constants';
 import { AvatarContainerStyle } from '../mine';
 import { mineCenterAvatarSize, mineCenterContentTop } from '../mine/constants';
@@ -29,6 +29,8 @@ interface InfoItem {
         error: string
     ) => JSX.Element,
 }
+
+const appearanceWidth = 200;
 
 export const Setting: FC = () => {
     const userInfo = useSelector((state: RootState) => state.user.userInfo);
@@ -141,6 +143,29 @@ export const Setting: FC = () => {
                     variant='outlined'
                     onChange={onChange}
                 />
+    }, {
+        label: '形象照',
+        key: 'appearance',
+        content: userInfo.appearance ?? '',
+        style: DescStyle,
+        renderViewer: (value: any) => (
+            <Box sx={{
+                '& .ant-upload': {
+                    width: `${appearanceWidth}px`,
+                    height: `${appearanceWidth * appearanceAspect}px`
+                }
+            }}>
+                <ImgUploader
+                    defaultValue={value}
+                    label='形象照'
+                    onUploaded={(url: string) => {
+                        dispatch(updateUserInfoAction({ id: userInfo.id, appearance: url}));
+                    }}
+                    maxSize={5}
+                    aspect={appearanceAspect}
+                />
+            </Box>
+        )
     }], [userInfo]);
     const onEditClick = (index: number, content: string) => () => {
         setEditIndex(index);

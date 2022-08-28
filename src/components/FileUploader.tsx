@@ -43,9 +43,8 @@ export const FileUploader: React.FC<{
             showUploadList={maxCount > 1}
         >
             <Box sx={ContentStyle}>
-                <Box sx={ButtonStyle}>
-                    {uploading ? <LoadingOutlined /> : <UploadOutlined />}
-                </Box>
+                {uploading ? <LoadingOutlined /> : <UploadOutlined />}
+                <Box>点击或拖拽至此处上传</Box>
             </Box>
         </Dragger>
     );
