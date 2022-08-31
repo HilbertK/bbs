@@ -30,6 +30,25 @@ export function getParamsFromUrl(): Record<string, string> {
     return result;
 }
 
+export const getSizeString = (size: number) => {
+    const TEXT = ['B', 'KB', 'MB', 'GB', 'TB'];
+    let t = 0;
+    let siz = size || 0;
+
+    if (isNaN(siz)) {
+        return '未知大小';
+    }
+    // 当附件大小为0或信息错误时不显示附件大小
+    if (siz <= 0) {
+        return '0B';
+    }
+    while (siz >= 1024 && t < 3) {
+        t++;
+        siz /= 1024;
+    }
+    return String(Math.floor(siz * 100) / 100) + TEXT[t];
+};
+
 export function setObjToUrlParams(baseUrl: string, obj: any): string {
     let parameters = '';
     for (const key in obj) {

@@ -140,7 +140,7 @@ const TabBaseStyle = {
 
 const TabsBaseStyle = {
     '& .MuiTabs-indicator': {
-        backgroundColor: Palette.Brand.Normal
+        display: 'none'
     },
 };
 

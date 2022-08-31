@@ -5,12 +5,14 @@ import { getUploadAuth, uploadFileWithPut } from '../service/api';
 
 interface IUploadProps {
     onUploaded?: (url: string) => Promise<void> | void,
+    onUrlFetched?: (url: string, file: RcFile) => void,
     maxSize: number, // xxM,
 }
 
 const { notification } = useMessage();
 export const useUpload = ({
     onUploaded,
+    onUrlFetched,
     maxSize,
 }: IUploadProps) => {
     const [uploading, setUploading] = useState<boolean>(false);
@@ -54,6 +56,7 @@ export const useUpload = ({
             const authResult = await getUploadAuth({fileName: file.name});
             newUploadUrl = authResult.signedUrl;
             uploadFileName.current = authResult.url;
+            onUrlFetched?.(authResult.url, file);
         } catch (e) {
             console.error(e);
             newUploadUrl = '';

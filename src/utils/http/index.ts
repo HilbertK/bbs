@@ -220,3 +220,4 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     );
 }
 export const defHttp = createAxios();
+export const defHttpWithNoTimeout = createAxios({ timeout: undefined });

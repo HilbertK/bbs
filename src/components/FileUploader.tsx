@@ -5,7 +5,6 @@ import type { UploadProps, UploadFileStatus } from 'antd/es/upload/interface';
 import React, { useMemo, useState } from 'react';
 import { Font } from '../base/style';
 import { useUpload } from '../hooks/useUpload';
-import { ContentCenterStyle } from '../ui/base-utils';
 
 const { Dragger } = Upload;
 export const FileUploader: React.FC<{
@@ -14,8 +13,9 @@ export const FileUploader: React.FC<{
     label: string,
     onUploaded?: (url: string) => Promise<void> | void,
     onFileChange: (status: UploadFileStatus) => void,
+    maxSize?: number,
 }> = props => {
-    const { maxCount, label, onUploaded, onFileChange } = props;
+    const { maxCount, label, onUploaded, onFileChange, maxSize = 500 } = props;
     const {
         uploading,
         onChange,
@@ -24,7 +24,7 @@ export const FileUploader: React.FC<{
         beforeUpload,
     } = useUpload({
         onUploaded,
-        maxSize: 2000,
+        maxSize,
     });
 
     const onChangeHandler: UploadProps['onChange'] = info => {
@@ -44,7 +44,7 @@ export const FileUploader: React.FC<{
         >
             <Box sx={ContentStyle}>
                 {uploading ? <LoadingOutlined /> : <UploadOutlined />}
-                <Box>点击或拖拽至此处上传</Box>
+                <Box sx={ContentTextStyle}>点击或拖拽{label}至此处上传</Box>
             </Box>
         </Dragger>
     );
@@ -56,25 +56,7 @@ const ContentStyle = {
     height: '100%',
 };
 
-const ButtonStyle = {
-    ...ContentCenterStyle,
-    fontSize: '30px',
-    flexDirection: 'column',
-    background: 'rgba(98, 110, 133, .5)',
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    width: '100%',
-    height: '100%',
-    color: '#fff',
-};
-
-const ImgStyle = {
-    width: '100%',
-    height: '100%',
-};
-
-const ButtonTextStyle = {
-    ...Font.TitleLargeBold,
+const ContentTextStyle = {
+    ...Font.TitleMediumBold,
     marginTop: '15px',
 };

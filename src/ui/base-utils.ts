@@ -1,6 +1,4 @@
 import { Font, Palette, RoundCorner } from '../base/style';
-import { calcWidth } from '../utils/util';
-
 export const SingleText = {
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
@@ -101,7 +99,7 @@ export const contentMinHeight = 'calc(100vh - 64px)';
 export const contentTop = 32;
 export const blockSpacing = 16;
 export const headerMenuHeight = 64;
-export const appearanceAspect = 3 / 2;
+export const appearanceAspect = 2 / 3;
 
 export const antdColor = {
     primaryColor: Palette.Brand.Clicked,

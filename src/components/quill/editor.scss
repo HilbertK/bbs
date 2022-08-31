@@ -3,6 +3,10 @@
     height: 70vh;
     border: none;
     border-top: 1px solid #ECEFF4 !important;
+    font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+.ql-toolbar.ql-snow {
+    font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
 .ql-toolbar.ql-snow {
@@ -25,19 +29,77 @@
 .ql-snow.ql-toolbar button:hover .ql-fill, .ql-snow .ql-toolbar button:hover .ql-fill, .ql-snow.ql-toolbar button:focus .ql-fill, .ql-snow .ql-toolbar button:focus .ql-fill, .ql-snow.ql-toolbar button.ql-active .ql-fill, .ql-snow .ql-toolbar button.ql-active .ql-fill, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-fill, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-fill, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-fill, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-fill, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-fill, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-fill, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-fill, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-fill, .ql-snow.ql-toolbar button:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar button:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar button:focus .ql-stroke.ql-fill, .ql-snow .ql-toolbar button:focus .ql-stroke.ql-fill, .ql-snow.ql-toolbar button.ql-active .ql-stroke.ql-fill, .ql-snow .ql-toolbar button.ql-active .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill {
     fill: #BB4343 !important;
 }
-
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="10"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="10"]::before {
+    content: "10";
+    font-size: 10px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="12"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12"]::before {
+    content: "12";
+    font-size: 12px;
+}
 .ql-snow .ql-picker.ql-size .ql-picker-label::before, .ql-snow .ql-picker.ql-size .ql-picker-item::before {
-    content: '14'
+    content: "14";
 }
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=small]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {
-    content: '10'
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="16"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16"]::before {
+    content: '16';
+    font-size: 16px;
 }
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=large]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=large]::before {
-    content: '18'
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="18"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18"]::before {
+    content: '18';
+    font-size: 18px;
 }
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=huge]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=huge]::before {
-    content: '32'
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="20"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20"]::before {
+    content: '20';
+    font-size: 20px;
 }
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="22"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="22"]::before {
+    content: "22";
+    font-size: 22px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="24"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="24"]::before {
+    content: "24";
+    font-size: 24px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="26"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="26"]::before {
+    content: "26";
+    font-size: 26px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="28"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="28"]::before {
+    content: "28";
+    font-size: 28px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="30"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="30"]::before {
+    content: "30";
+    font-size: 30px;
+}
+.ql-size-12 {
+    font-size: 12px;
+}
+.ql-size-16 {
+    font-size: 16px;
+}
+.ql-size-18 {
+    font-size: 18px;
+}
+.ql-size-20 {
+    font-size: 20px;
+}
+.ql-size-22 {
+    font-size: 22px;
+}
+.ql-size-24 {
+    font-size: 24px;
+}
+.ql-size-26 {
+    font-size: 26px;
+}
+.ql-size-28 {
+    font-size: 28px;
+}
+.ql-size-30 {
+    font-size: 30px;
+}
+
 .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before, .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
     content: '一级标题'
 }
@@ -57,6 +119,81 @@
     border: 1px solid #F0F3F5;
     max-width: 100%;
     width: 600px;
+    height: auto;
     margin: 0 auto;
-    min-height: 400px;
+}
+.ql-snow .ql-tooltip[data-mode=link]::before {
+    content: "请输入链接:";
+}
+.ql-snow .ql-tooltip.ql-editing a.ql-action::after {
+    content: "确认";
+}
+.ql-snow .ql-tooltip::before {
+    content: "链接";
+}
+.ql-snow .ql-tooltip a.ql-action::after {
+    content: "编辑";
+}
+.ql-snow .ql-tooltip a.ql-remove::before {
+    content: "移除";
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item::before {
+    content: "默认字体";
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="SimSun"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="SimSun"]::before {
+    content: "宋体";
+    font-family: SimSun, STSong;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="SimHei"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="SimHei"]::before {
+    content: "黑体";
+    font-family: SimHei, STHeiti;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="KaiTi"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="KaiTi"]::before {
+    content: "楷体";
+    font-family: KaiTi_GB2312, KaiTi, STKaiti;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="FangSong"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="FangSong"]::before {
+    content: "仿宋";
+    font-family: FangSong_GB2312, FangSong, STFangsong;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Arial"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Arial"]::before {
+    content: "Arial";
+    font-family: Arial;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Times-New-Roman"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Times-New-Roman"]::before {
+    content: "Times New Roman";
+    font-family: Times New Roman;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="sans-serif"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="sans-serif"]::before {
+    content: "sans-serif";
+    font-family: sans-serif;
+}
+.ql-font-SimSun {
+    font-family: SimSun, STSong;
+}
+.ql-font-SimHei {
+    font-family: SimHei, STHeiti;
+}
+.ql-font-KaiTi {
+    font-family: KaiTi_GB2312, KaiTi, STKaiti;
+}
+.ql-font-FangSong {
+    font-family: FangSong_GB2312, FangSong, STFangsong;
+}
+.ql-font-Arial {
+    font-family: Arial;
+}
+.ql-font-Times-New-Roman {
+    font-family: Times New Roman;
+}
+.ql-font-sans-serif {
+    font-family: sans-serif;
 }

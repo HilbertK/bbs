@@ -1,5 +1,6 @@
 import { Box, Button } from '@mui/material';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import _debounce from 'lodash-es/debounce';
 import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import { Border, Font, Palette, RoundCorner, Shadow } from '../../base/style';
@@ -18,11 +19,12 @@ import { useMessage } from '../../hooks/useMessage';
 import { ArticleParams } from '../../service/interface';
 
 export const Publish: FC = () => {
-    const [content, setContent] = useState<string>(publishStorageService.getStoragePublishArticle()?.data ?? '');
-    const [title, setTitle] = useState<string>(publishStorageService.getStoragePublishArticle()?.title ?? '');
-    const [description, setDescription] = useState<string>(publishStorageService.getStoragePublishArticle()?.description ?? '');
+    const storageData = publishStorageService.getStoragePublishArticle();
+    const [content, setContent] = useState<string>(storageData?.data ?? '');
+    const [title, setTitle] = useState<string>(storageData?.title ?? '');
+    const [description, setDescription] = useState<string>(storageData?.description ?? '');
     const [headingList, setHeadingList] = useState<CatalogItem[]>([]);
-    const [category, setCategory] = useState<string[]>(publishStorageService.getStoragePublishArticle()?.category ?? []);
+    const [category, setCategory] = useState<string[]>(storageData?.category ?? []);
     const editorRef = useRef<ReactQuill>(null);
     const { notification } = useMessage();
     const navigate = useNavigate();
@@ -47,11 +49,11 @@ export const Publish: FC = () => {
             ...params,
         });
     };
-    const setEditorContent = (newContent: string) => {
+    const setEditorContent = useCallback(_debounce((newContent: string) => {
         setContent(newContent);
         storeArticle({ data: newContent });
         generateCatalog();
-    };
+    }, 500), [editorRef.current]);
     const setTitleWithStorage = (newValue: string) => {
         setTitle(newValue);
         storeArticle({ title: newValue });

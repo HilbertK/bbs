@@ -1,9 +1,11 @@
 
-import { defHttp } from '../utils/http';
+import { defHttp, defHttpWithNoTimeout } from '../utils/http';
 import { isDevelopment } from '../utils/util';
 import { CheckerParams, IUserInfo, LoginParams, LoginResultModel, RegisterParams, ThirdLoginParams, UploadAuthParams, UploadParams } from './interface';
 import { setAuthCache } from '../utils/auth';
 import { TOKEN_KEY } from '../utils/cache/enum';
+import axios from 'axios';
+import { notification } from 'antd';
 
 enum Api {
     Login = '/sys/login',
@@ -122,7 +124,7 @@ export const getTableList = (params: any) => defHttp.get({ url: Api.GetTableList
 /**
  * 文件上传
  */
-export const uploadFile = (params: any, success: any) => defHttp.uploadFile({ url: uploadUrl }, params, { success });
+export const uploadFile = (params: any, success: any) => defHttpWithNoTimeout.uploadFile({ url: uploadUrl }, params, { success });
 /**
  * 下载文件
  * @param url 文件路径
@@ -130,43 +132,80 @@ export const uploadFile = (params: any, success: any) => defHttp.uploadFile({ ur
  * @param parameter
  * @returns {*}
  */
-export const downloadFile = (url: string, fileName?: string, parameter?: any) => getFileblob(url, parameter).then((data) => {
+export const downloadFile = (
+    url: string,
+    onProgress: (event: any) => void,
+    onLoaded: () => void,
+    fileName?: string
+) => getFileblob(url, onProgress).then(res => {
+    if (!res) return;
+    const { data } = res;
     if (!data || data.size === 0) {
+        notification.error({ message: '下载失败' });
         return;
     }
-    if (typeof (window.navigator as any).msSaveBlob !== 'undefined') {
-        (window.navigator as any).msSaveBlob(new Blob([data]), fileName);
-    } else {
-        let url = window.URL.createObjectURL(new Blob([data]));
-        let link = document.createElement('a');
-        link.style.display = 'none';
-        link.href = url;
-        link.setAttribute('download', fileName ?? '未命名文件');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link); //下载完成移除元素
-        window.URL.revokeObjectURL(url); //释放掉blob对象
-    }
+    const newUrl = window.URL.createObjectURL(new Blob([data]));
+    let link = document.createElement('a');
+    link.style.display = 'none';
+    link.href = newUrl;
+    link.setAttribute('download', fileName ?? '未命名文件');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link); //下载完成移除元素
+    window.URL.revokeObjectURL(newUrl); //释放掉blob对象
+    onLoaded();
 });
 
 /**
- * 下载文件 用于excel导出
+ * 下载文件
  * @param url
  * @param parameter
  * @returns {*}
  */
-export const getFileblob = (url: string, parameter: any) => defHttp.get(
+export const getFileblob = (
+    url: string,
+    onProgress: (event: any) => void,
+) => axios(
     {
+        method: 'get',
         url: url,
-        params: parameter,
-        responseType: 'blob',
-    },
-    { isTransformResponse: false }
+        responseType: 'arraybuffer',
+        onDownloadProgress: onProgress
+    }
 );
+
+export const download = (
+    url: string,
+    fileName: string,
+    onProgress: (loaded: number, total: number) => void,
+    onLoaded: () => void
+) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onprogress = event => { // 下载进度事件
+        onProgress(event.loaded, event.total);
+    };
+
+    xhr.onload = event => {
+      if (xhr.readyState === 4 && xhr.status === 200) { // 下载完成之后
+            const blob = new Blob([xhr.response]);
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link); //下载完成移除元素
+            window.URL.revokeObjectURL(url); //释放掉blob对象
+            onLoaded();
+        }
+    };
+
+    xhr.open('GET', url);
+    xhr.send();
+};
 
 export const getUploadAuth = (params?: UploadAuthParams) => defHttp.get({ url: Api.GetUploadAuth, params });
 
-export const uploadFileWithPut = (params: UploadParams) => defHttp.UploadFileWithPut(params);
+export const uploadFileWithPut = (params: UploadParams) => defHttpWithNoTimeout.UploadFileWithPut(params);
 
 export const updateUserInfo =
     (params: Partial<IUserInfo> & { id: string | number }) => defHttp.post({ url: Api.EditUserInfo, params });

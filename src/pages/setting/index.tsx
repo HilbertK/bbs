@@ -152,7 +152,7 @@ export const Setting: FC = () => {
             <Box sx={{
                 '& .ant-upload': {
                     width: `${appearanceWidth}px`,
-                    height: `${appearanceWidth * appearanceAspect}px`
+                    height: `${appearanceWidth / appearanceAspect}px`
                 }
             }}>
                 <ImgUploader

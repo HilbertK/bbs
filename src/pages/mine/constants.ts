@@ -1,5 +1,3 @@
-import { calcWidth } from '../../utils/util';
-
 export const mineCenterContentTop = 50;
 export const drawerWidth = 250;
 export const mineCenterAvatarSize = 168;
