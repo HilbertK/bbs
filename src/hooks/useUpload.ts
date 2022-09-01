@@ -2,11 +2,13 @@ import type { RcFile, UploadProps } from 'antd/es/upload/interface';
 import { useRef, useState } from 'react';
 import { useMessage } from './useMessage';
 import { getUploadAuth, uploadFileWithPut } from '../service/api';
+import { getSizeString } from '../utils/util';
 
 interface IUploadProps {
     onUploaded?: (url: string) => Promise<void> | void,
     onUrlFetched?: (url: string, file: RcFile) => void,
     maxSize: number, // xxM,
+    label?: string,
 }
 
 const { notification } = useMessage();
@@ -14,6 +16,7 @@ export const useUpload = ({
     onUploaded,
     onUrlFetched,
     maxSize,
+    label = '文件',
 }: IUploadProps) => {
     const [uploading, setUploading] = useState<boolean>(false);
     const uploadFileName = useRef<string>('');
@@ -44,7 +47,7 @@ export const useUpload = ({
     const beforeUpload = (file: RcFile) => {
         const isLt2M = file.size / 1024 / 1024 < maxSize;
         if (!isLt2M) {
-            notification.error({message: `文件大小不能超过${maxSize}MB`});
+            notification.error({message: `${label}大小不能超过${getSizeString(maxSize * 1024 * 1024)}`});
             return false;
         }
         return true;

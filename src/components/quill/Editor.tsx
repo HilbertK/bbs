@@ -1,6 +1,7 @@
 import { forwardRef, MutableRefObject, useMemo, useRef } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import ReactQuill, { Quill } from 'react-quill';
+import BlotFormatter from 'quill-blot-formatter';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import 'react-quill/dist/quill.snow.css';
 import 'quill-emoji/dist/quill-emoji.css';
@@ -8,9 +9,9 @@ import { Light } from '../../base/style';
 import './editor.scss';
 import { FileUploader, ImgUploader } from './components/Uploader';
 import { VideoBlot } from './video';
-import { ImageBlot } from './image';
 import { AttachmentBlot, attachmentBlotClassName, attachmentDownloadClassName, attachmentLoadingClassName } from './attachment';
 import type { RcFile } from 'antd/es/upload/interface';
+import { ImageBlot } from './image';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Emoji = require('quill-emoji');
 const icons = Quill.import('ui/icons');
@@ -33,7 +34,8 @@ Quill.register({
     'modules/emoji': Emoji,
     'formats/video': VideoBlot,
     'formats/image': ImageBlot,
-    'formats/attachment': AttachmentBlot
+    'formats/attachment': AttachmentBlot,
+    'modules/blotFormatter': BlotFormatter
 }, true);
 const LightColors = Object.values(Light).reduce((prev: string[], curr) => ([...prev, ...Object.values(curr).slice(-7)]), []);
 
@@ -56,11 +58,6 @@ export const Editor = forwardRef<ReactQuill, IEditor>((props, ref) => {
         const currPos = quill.getSelection()?.index ?? 0;
         quill.insertEmbed(currPos, 'image', { url });
         quill.setSelection(currPos + 2, 0);
-    };
-    const imageUploaded = (url: string) => {
-        const imageDom = document.querySelector(`img[data-url="${url}"]`);
-        if (!imageDom) return;
-        imageDom.setAttribute('src', url);
     };
     const insertVideo = (url: string) => {
         const quill = (ref as MutableRefObject<ReactQuill>)?.current?.getEditor();
@@ -107,6 +104,7 @@ export const Editor = forwardRef<ReactQuill, IEditor>((props, ref) => {
                 },
             },
         },
+        blotFormatter: {},
         'emoji-toolbar': true,
         'emoji-textarea': false,
         'emoji-shortname': true,
@@ -116,22 +114,23 @@ export const Editor = forwardRef<ReactQuill, IEditor>((props, ref) => {
         <>
             <ImgUploader
                 ref={imgRef}
-                onUploaded={imageUploaded}
-                onUrlFetched={insertImage}
-                maxSize={5}
+                onUploaded={insertImage}
+                maxSize={1}
             />
             <FileUploader
                 ref={videoRef}
                 accept='video/*'
                 onUploaded={videoUploaded}
                 onUrlFetched={insertVideo}
-                maxSize={2000}
+                maxSize={2048}
+                label='视频'
             />
             <FileUploader
                 ref={attachmentRef}
                 onUploaded={attachmentUploaded}
                 onUrlFetched={insertAttachment}
-                maxSize={2000}
+                maxSize={2048}
+                label='附件'
             />
             <ReactQuill
                 ref={ref}

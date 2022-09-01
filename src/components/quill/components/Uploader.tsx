@@ -1,6 +1,5 @@
 import { Box } from '@mui/material';
 import { Upload } from 'antd';
-import ImgCrop from 'antd-img-crop';
 import type { RcFile } from 'antd/es/upload/interface';
 import { forwardRef } from 'react';
 import { createPortal } from 'react-dom';
@@ -10,9 +9,8 @@ export const ImgUploader = forwardRef((props: {
     onUploaded?: (url: string) => Promise<void> | void,
     onUrlFetched?: (url: string) => void,
     maxSize?: number,
-    aspect?: number,
 }, ref) => {
-    const { onUploaded, maxSize = 1, aspect = 1, onUrlFetched } = props;
+    const { onUploaded, maxSize = 1, onUrlFetched } = props;
     const {
         onChange,
         getUploadUrl,
@@ -22,20 +20,19 @@ export const ImgUploader = forwardRef((props: {
         onUploaded,
         onUrlFetched,
         maxSize,
+        label: '图片'
     });
     return createPortal(
         <Box sx={ContentStyle} ref={ref}>
-            <ImgCrop rotate aspect={aspect} cropperProps={{restrictPosition: false}} minZoom={0.5}>
-                <Upload
-                    beforeUpload={beforeUpload}
-                    method='PUT'
-                    customRequest={onCustomRequest}
-                    action={getUploadUrl}
-                    accept='.jpg,.jpeg,.png,.gif'
-                    onChange={onChange}
-                    showUploadList={false}
-                />
-            </ImgCrop>
+            <Upload
+                beforeUpload={beforeUpload}
+                method='PUT'
+                customRequest={onCustomRequest}
+                action={getUploadUrl}
+                accept='.jpg,.jpeg,.png,.gif'
+                onChange={onChange}
+                showUploadList={false}
+            />
         </Box>,
         document.body
     );
@@ -46,8 +43,9 @@ export const FileUploader = forwardRef((props: {
     onUrlFetched?: (url: string, file: RcFile) => void,
     maxSize?: number,
     accept?: string,
+    label?: string,
 }, ref) => {
-    const { onUploaded, maxSize = 1, accept, onUrlFetched } = props;
+    const { onUploaded, maxSize = 1, accept, onUrlFetched, label } = props;
     const {
         onChange,
         getUploadUrl,
@@ -57,6 +55,7 @@ export const FileUploader = forwardRef((props: {
         onUploaded,
         onUrlFetched,
         maxSize,
+        label
     });
     return createPortal(
         <Box sx={ContentStyle} ref={ref}>

@@ -96,7 +96,6 @@ const AttachmentContainerStyle = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '15px',
-    userSelect: 'none'
 };
 
 const AttachmentContentStyle = {
@@ -110,6 +109,7 @@ const AttachmentInfoStyle = {
     marginRight: '15px',
     width: '100%',
     ...Font.AiderMedium,
+    userSelect: 'text',
     textAlign: 'left !important'
 };
 

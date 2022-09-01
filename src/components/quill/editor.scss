@@ -1,9 +1,13 @@
 .ql-container.ql-snow {
     font-size: 14px;
+    overflow: auto;
     height: 70vh;
     border: none;
     border-top: 1px solid #ECEFF4 !important;
     font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+.ql-editor {
+    overflow: unset;
 }
 .ql-toolbar.ql-snow {
     font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
@@ -120,7 +124,25 @@
     max-width: 100%;
     width: 600px;
     height: auto;
-    margin: 0 auto;
+}
+.ql-editor .ql-image {
+    max-width: 100%;
+    height: auto;
+    min-width: 100px;
+}
+.ql-editor .ql-video, .ql-editor .ql-attachment {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.ql-editor .ql-video.ql-align-center, .ql-editor .ql-attachment.ql-align-center {
+    justify-content: center;
+}
+.ql-editor .ql-video.ql-align-right, .ql-editor .ql-attachment.ql-align-right {
+    justify-content: flex-end;
+}
+.ql-editor .ql-video.ql-align-justify {
+    width: 100%;
 }
 .ql-snow .ql-tooltip[data-mode=link]::before {
     content: "请输入链接:";
