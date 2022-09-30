@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 import { service } from '../../service/mock-service';
 import { RootState } from '../../store';
 import categorySlice from './slice';
-import { CategoryList } from '../../utils/constants';
+import { CategoryList, Page } from '../../utils/constants';
 import { CategoryItem } from '../../base/interface';
 import { contentTop, contentWidth } from '../../ui/base-utils';
 import { Border, Font, Palette } from '../../base/style';
@@ -15,6 +15,7 @@ import { listWidth, menuWidth } from './constants';
 import { List } from '../../components/articles/List';
 import { ArticleListSorter, IArticleData } from '../../service/interface';
 import { useMessage } from '../../hooks/useMessage';
+import { actions, SubMenuEnum } from '../../store/menu-slice';
 
 type MenuItems = Required<MenuProps>['items'];
 
@@ -106,6 +107,10 @@ export const Category: FC = () => {
   const loadMore = async () => {
     await fetchData(categoryFilter, currSorter, start, list);
   };
+  useEffect(() => {
+      dispatch(actions.setCurrSubMenu(SubMenuEnum.Home));
+      dispatch(actions.setTopSubMenu(Page.Category));
+  }, []);
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);

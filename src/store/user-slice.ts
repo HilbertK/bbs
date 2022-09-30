@@ -4,6 +4,7 @@ import { doLogout, getUserInfo, loginApi, thirdLogin, updateUserInfo } from '../
 import { TOKEN_KEY, USER_INFO_KEY } from '../utils/cache/enum';
 import { getToken, setAuthCache } from '../utils/auth';
 import { useMessage } from '../hooks/useMessage';
+import { Page } from '../utils/constants';
 
 export interface InitialState {
     userInfo: IUserInfo | null,
@@ -73,11 +74,12 @@ export const logout = createAsyncThunk<any, boolean>(
         setAuthCache(TOKEN_KEY, null);
         dispatch(actions.setSessionTimeout(false));
         dispatch(actions.setUserInfo(null));
-        setTimeout(() => {
-            location.reload();
-        }, 300);
         if (goLogin) {
-            // TODO: 调起登录
+            location.href = `/${Page.Login}?redirect=${encodeURIComponent(location.pathname + location.search)}`;
+        } else {
+            setTimeout(() => {
+                location.reload();
+            }, 300);
         }
     }
 );

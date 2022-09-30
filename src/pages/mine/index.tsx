@@ -1,13 +1,12 @@
 import { Box, Button, Tab, Tabs } from '@mui/material';
-import { FC, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import BadgeIcon from '@mui/icons-material/Badge';
 import PhoneIcon from '@mui/icons-material/StayCurrentPortrait';
 import CakeIcon from '@mui/icons-material/Cake';
 import EmailIcon from '@mui/icons-material/Email';
-import DescriptionIcon from '@mui/icons-material/Description';
 import WcIcon from '@mui/icons-material/Wc';
 import { Font, Palette, RoundCorner, Shadow } from '../../base/style';
 import { Avatar } from '../../components/avatar/Avatar';
@@ -17,6 +16,7 @@ import { Page, SexDict, SexEnum } from '../../utils/constants';
 import { MineArticles } from './Articles';
 import { mineCenterAvatarSize, mineCenterContentTop, mineCenterInfoContentSize, mineDetailContentWidth, mineDetailSiderWidth } from './constants';
 import { IUserInfo } from '../../service/interface';
+import { actions, SubMenuEnum } from '../../store/menu-slice';
 
 interface InfoItem {
     key: string,
@@ -30,6 +30,11 @@ export const Mine: FC = () => {
     const userInfo = useSelector((state: RootState) => state.user.userInfo);
     const [showNum, setShowNum] = useState<number>(showInfoNum);
     const [checkedTab, setCheckedTab] = useState<number>(0);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(actions.setCurrSubMenu(SubMenuEnum.Mine));
+        dispatch(actions.setTopSubMenu(null));
+    }, []);
     if (userInfo === null) return null;
     const navigate = useNavigate();
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {

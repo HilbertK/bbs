@@ -1,42 +1,43 @@
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import { FC, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Avatar } from '../../components/avatar/Avatar';
-import { RootState } from '../../store';
+import { Avatar } from '../components/avatar/Avatar';
+import { RootState } from '../store';
 import { drawerWidth } from './constants';
-import { Font, Palette } from '../../base/style';
+import { Font, Palette } from '../base/style';
 import { subRoutes, SubRouteType } from './sub-routes';
-import { Login } from '../../components/login';
-import { logout } from '../../store/user-slice';
+import { Login } from '../components/login';
+import { logout } from '../store/user-slice';
 import { Dispatch } from '@reduxjs/toolkit';
-import { defaultAvatarSize } from '../../components/avatar/DefaultAvatar';
+import { defaultAvatarSize } from '../components/avatar/DefaultAvatar';
+import { actions } from '../store/menu-slice';
 
-export const HeaderUser: FC<{
-    onRouteChange: () => void,
-}> = props => {
-    const { onRouteChange } = props;
+export const HeaderUser = () => {
     const dispatch: Dispatch<any> = useDispatch();
+    const currSubMenu = useSelector((state: RootState) => state.menu.currSubMenu);
     const [loginOpen, setLoginOpen] = useState<boolean>(false);
     const userInfo = useSelector((state: RootState) => state.user.userInfo);
     const navigate = useNavigate();
-    const mineMenu = useMemo(() => subRoutes.map((subRoute, index) => ({
+    const mineMenu = useMemo(() => subRoutes.map(({ checkFn, ...subRoute }, index) => ({
         ...subRoute,
+        show: userInfo ? (checkFn ? checkFn(userInfo) : true) : false,
         handler: () => {
-            const { type, link } = subRoute;
+            const { type, path, key } = subRoute;
             switch (type) {
                 case SubRouteType.Page:
                     setActiveIndex(index);
                     break;
                 case SubRouteType.Signout:
-                    dispatch(logout(false));
+                    dispatch(actions.setCurrSubMenu(null));
+                    dispatch(actions.setTopSubMenu(null));
+                    dispatch(logout(true));
                     return;
             }
-            onRouteChange();
-            navigate(link);
+            navigate(path);
         },
-    })), []);
-    const findActiveIndex = () => mineMenu.findIndex(item => `${location.pathname}${location.search}` === item.link);
+    })), [userInfo]);
+    const findActiveIndex = () => mineMenu.findIndex(item => currSubMenu === item.key);
     const [menuVisible, setMenuVisible] = useState<boolean>(false);
     const [activeIndex, setActiveIndex] = useState<number>(findActiveIndex);
     const itemHandler = (handler: any) => () => {
@@ -78,11 +79,11 @@ export const HeaderUser: FC<{
                     {renderAvatar}
                 </Box>
                 <List>
-                    {mineMenu.map(({ title, handler, iconComp }, index) => (
-                        <ListItem key={title} disablePadding>
+                    {mineMenu.filter(item => item.show).map(({ name, handler, iconComp, key }, index) => (
+                        <ListItem key={key} disablePadding>
                             <ListItemButton selected={index === activeIndex} onClick={itemHandler(handler)}>
                                 <ListItemIcon>{iconComp}</ListItemIcon>
-                                <ListItemText primary={title} />
+                                <ListItemText primary={name} />
                             </ListItemButton>
                         </ListItem>
                     ))}

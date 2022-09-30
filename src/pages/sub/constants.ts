@@ -7,15 +7,19 @@ const subBasePath = __sub_path__ !== '' ? `/${__sub_path__}` : '';
 export const baseUrl = isDevelopment ?
     `${window.location.protocol}//localhost:3100`
     : `${window.location.protocol}//${window.location.host}${subBasePath}`;
-export const userSystemPath = '/system/user';
-export const roleSystemPath = '/system/role';
 
 export enum SubPathValue {
     User = 'user',
     Role = 'role',
+    AllFlows = 'allFlows',
+    CreateFlows = 'createFlows',
+    HandleFlows = 'handleFlows'
 }
 
 export const subPathDict = {
-    [SubPathValue.User]: userSystemPath,
-    [SubPathValue.Role]: roleSystemPath
+    [SubPathValue.User]: '/system/user',
+    [SubPathValue.Role]: '/system/role',
+    [SubPathValue.AllFlows]: '/system/flow',
+    [SubPathValue.CreateFlows]: '/system/flow?create=1',
+    [SubPathValue.HandleFlows]: '/system/flow?handle=1',
 };

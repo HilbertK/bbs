@@ -6,7 +6,7 @@ import ReactQuill from 'react-quill';
 import { Border, Font, Palette, RoundCorner, Shadow } from '../../base/style';
 import { Input } from '../../components/Input';
 import { service } from '../../service/mock-service';
-import { CategoryList } from '../../utils/constants';
+import { CategoryList, Page } from '../../utils/constants';
 import { CascaderMenu } from '../../components/CascaderMenu';
 import { Editor } from '../../components/quill/Editor';
 import { CatalogItem } from '../../base/interface';
@@ -17,6 +17,8 @@ import { getArticleLink } from '../../utils/util';
 import { catalogWidth } from '../article/constants';
 import { useMessage } from '../../hooks/useMessage';
 import { ArticleParams } from '../../service/interface';
+import { useDispatch } from 'react-redux';
+import { actions, SubMenuEnum } from '../../store/menu-slice';
 
 export const Publish: FC = () => {
     const storageData = publishStorageService.getStoragePublishArticle();
@@ -27,6 +29,7 @@ export const Publish: FC = () => {
     const [category, setCategory] = useState<string[]>(storageData?.category ?? []);
     const editorRef = useRef<ReactQuill>(null);
     const { notification } = useMessage();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const generateCatalog = () => {
         let newHeadingList: CatalogItem[] = [];
@@ -96,6 +99,10 @@ export const Publish: FC = () => {
             notification.error({ message: '发布失败，请重试' });
         }
     }, [content, title, category, publishStorageService]);
+    useEffect(() => {
+        dispatch(actions.setCurrSubMenu(SubMenuEnum.Home));
+        dispatch(actions.setTopSubMenu(Page.Publish));
+    }, []);
     useEffect(() => {
         const storageContent = publishStorageService.getStoragePublishArticle();
         if (

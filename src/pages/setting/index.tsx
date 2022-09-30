@@ -1,6 +1,6 @@
 import { Box, Button, SxProps, Theme as SxTheme } from '@mui/material';
 import { Dispatch } from '@reduxjs/toolkit';
-import { FC, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Font, Palette, RoundCorner, Shadow } from '../../base/style';
 import { DatePickerItem } from '../../components/form/DatePicker';
@@ -10,6 +10,7 @@ import { ImgUploader } from '../../components/ImgUploader';
 import { checkPhone } from '../../service/api-utils';
 import { IUserInfo } from '../../service/interface';
 import { RootState } from '../../store';
+import { actions, SubMenuEnum } from '../../store/menu-slice';
 import { updateUserInfoAction } from '../../store/user-slice';
 import { appearanceAspect, BaseButtonStyle, contentMinHeight, contentWidth, GrayOutlineButtonStyle } from '../../ui/base-utils';
 import { SexDict, SexEnum } from '../../utils/constants';
@@ -38,6 +39,10 @@ export const Setting: FC = () => {
     const [editIndex, setEditIndex] = useState<number | null>(null);
     const [itemValue, setItemValue] = useState<string>('');
     const [itemError, setItemError] = useState<string>('');
+    useEffect(() => {
+        dispatch(actions.setCurrSubMenu(SubMenuEnum.Home));
+        dispatch(actions.setTopSubMenu(null));
+    }, []);
     if (userInfo == null) return null;
     const infoList: Array<InfoItem> = useMemo(() => [{
         content: userInfo.username,
