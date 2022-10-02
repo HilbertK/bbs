@@ -45,7 +45,8 @@ export const subRoutes: Array<ISubRoute> = [
     {
         name: '退出登录',
         key: SubMenuEnum.Logout,
-        path: `/${Page.Login}`,
+        // TODO: 正式环境需调整
+        path: `/center/${Page.Login}`,
         type: SubRouteType.Signout,
         iconComp: <PowerSettingsNewIcon />,
     }
