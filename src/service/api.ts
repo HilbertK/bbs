@@ -1,6 +1,6 @@
 
 import { defHttp, defHttpWithNoTimeout } from '../utils/http';
-import { isDevelopment } from '../utils/util';
+import { isDevelopment, isTest } from '../utils/util';
 import { CheckerParams, IUserInfo, LoginParams, LoginResultModel, RegisterParams, ThirdLoginParams, UploadAuthParams, UploadParams } from './interface';
 import { setAuthCache } from '../utils/auth';
 import { TOKEN_KEY } from '../utils/cache/enum';
@@ -36,7 +36,9 @@ enum Api {
     EditUserInfo = '/sys/user/appEdit',
 }
 
-export const baseDomainUrl = isDevelopment ? 'http://localhost:8080/jeecg-system' : 'https://www.pifutan.com/jeecg-system';
+export const baseDomain = isDevelopment ? 'http://localhost:8080' : (isTest ? 'https://www.pifutan.com' : 'http://zhzw.zhongwenlaw.com');
+
+export const baseDomainUrl = `${baseDomain}/jeecg-system`;
 
 /**
  * 上传父路径

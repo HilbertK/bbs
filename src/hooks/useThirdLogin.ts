@@ -1,6 +1,7 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { baseDomain } from '../service/api';
 import { thirdLoginAction } from '../store/user-slice';
 import { defHttp } from '../utils/http';
 import { useMessage } from './useMessage';
@@ -31,7 +32,7 @@ export const useThirdLogin = () => {
     const [thirdPhone, setThirdPhone] = useState<string>('');
     //第三方登录
     const onThirdLogin = (source: string) => {
-        const url = `https://www.pifutan.com/jeecg-system/sys/thirdLogin/render/${source}`;
+        const url = `${baseDomain}/jeecg-system/sys/thirdLogin/render/${source}`;
         window.open(url, `login ${source}`, 'height=500, width=500, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no');
         thirdType.current = source;
         thirdLoginInfo.current = {};
