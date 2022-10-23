@@ -75,7 +75,7 @@ export const logout = createAsyncThunk<any, boolean>(
         dispatch(actions.setSessionTimeout(false));
         dispatch(actions.setUserInfo(null));
         if (goLogin) {
-            location.href = `/${Page.Login}?redirect=${encodeURIComponent(location.pathname + location.search)}`;
+            location.href = `/${__base_name__}/`;
         } else {
             setTimeout(() => {
                 location.reload();
