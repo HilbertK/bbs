@@ -14,7 +14,7 @@ import { setObjToUrlParams, deepMerge } from '../util';
 import signMd5Utils from '../signMd5Utils';
 import { joinTimestamp, formatRequestDate } from './helper';
 const urlPrefix = '';
-const apiUrl = '/jeecg-system';
+const apiUrl = '';
 const { createMessage, createErrorModal } = useMessage();
 
 /**

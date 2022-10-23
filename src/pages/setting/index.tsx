@@ -40,19 +40,14 @@ export const Setting: FC = () => {
     const [itemValue, setItemValue] = useState<string>('');
     const [itemError, setItemError] = useState<string>('');
     useEffect(() => {
-        dispatch(actions.setCurrSubMenu(SubMenuEnum.Home));
+        dispatch(actions.setCurrSubMenu(SubMenuEnum.Mine));
         dispatch(actions.setTopSubMenu(null));
     }, []);
     if (userInfo == null) return null;
     const infoList: Array<InfoItem> = useMemo(() => [{
-        content: userInfo.username,
-        key: 'username',
-        style: NameStyle
-    }, {
-        label: '真实名称',
         key: 'realname',
         content: userInfo.realname ?? '',
-        style: TextStyle,
+        style: NameStyle,
         renderEditor:
             (value, onChange, error) =>
                 <InputItem
@@ -315,9 +310,10 @@ const InfoItemStyle = {
         color: Palette.Brand.Normal,
         cursor: 'pointer',
         marginLeft: '20px',
+        alignItems: 'center',
     },
     [`&:hover .${editButtonClassName}`]: {
-        display: 'block',
+        display: 'flex',
     }
 };
 

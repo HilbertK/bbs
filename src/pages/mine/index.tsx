@@ -45,9 +45,6 @@ export const Mine: FC = () => {
     };
     const toggleMore = () => setShowNum(prev => prev === infoList.length ? showInfoNum : infoList.length);
     const infoList: Array<InfoItem> = useMemo(() => [{
-        key: 'realname',
-        iconComp: <BadgeIcon />,
-    }, {
         key: 'phone',
         iconComp: <PhoneIcon />,
     }, {
@@ -83,7 +80,7 @@ export const Mine: FC = () => {
                         />
                     </Box>
                     <Box sx={InfoContent}>
-                        <Box sx={NameStyle}>{userInfo.username}</Box>
+                        <Box sx={NameStyle}>{userInfo.realname}</Box>
                         <Box sx={{
                             height: `${32 * showNum}px`,
                             transition: 'height ease .5s',

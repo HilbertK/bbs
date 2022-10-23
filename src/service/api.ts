@@ -8,42 +8,40 @@ import axios from 'axios';
 import { notification } from 'antd';
 
 enum Api {
-    Login = '/sys/login',
-    getInputCode = '/sys/randomImage',
-    Logout = '/sys/logout',
-    GetUserInfo = '/sys/user/getUserInfo',
+    Login = '/jeecg-system/sys/login',
+    getInputCode = '/jeecg-system/sys/randomImage',
+    Logout = '/jeecg-system/sys/logout',
+    GetUserInfo = '/jeecg-system/sys/user/getUserInfo',
     //注册接口
-    registerApi = '/sys/user/register',
+    registerApi = '/jeecg-system/sys/user/register',
     // 获取系统权限
     // 1、查询用户拥有的按钮/表单访问权限
     // 2、所有权限
     // 3、系统安全模式
-    GetPermCode = '/sys/permission/getPermCode',
+    GetPermCode = '/jeecg-system/sys/permission/getPermCode',
     //修改密码
-    PasswordChange = '/sys/user/passwordChange',
+    PasswordChange = '/jeecg-system/sys/user/passwordChange',
     //校验用户接口
-    checkOnlyUser = '/sys/user/checkOnlyUser',
+    checkOnlyUser = '/jeecg-system/sys/user/checkOnlyUser',
     //第三方登录
-    thirdLogin = '/sys/thirdLogin/getLoginUser',
-    PositionList = '/sys/position/list',
-    UserList = '/sys/user/list',
-    RoleList = '/sys/role/list',
-    QueryDepartTreeSync = '/sys/sysDepart/queryDepartTreeSync',
-    QueryTreeList = '/sys/sysDepart/queryTreeList',
-    GetTableList = '/sys/user/queryUserComponentData',
-    GetUploadAuth = '/sys/upload/presignedUrl',
+    thirdLogin = '/jeecg-system/sys/thirdLogin/getLoginUser',
+    PositionList = '/jeecg-system/sys/position/list',
+    UserList = '/jeecg-system/sys/user/list',
+    RoleList = '/jeecg-system/sys/role/list',
+    QueryDepartTreeSync = '/jeecg-system/sys/sysDepart/queryDepartTreeSync',
+    QueryTreeList = '/jeecg-system/sys/sysDepart/queryTreeList',
+    GetTableList = '/jeecg-system/sys/user/queryUserComponentData',
+    GetUploadAuth = '/jeecg-system/sys/upload/presignedUrl',
     // 用户相关
-    EditUserInfo = '/sys/user/appEdit',
+    EditUserInfo = '/jeecg-system/sys/user/appEdit',
 }
 
 export const baseDomain = isDevelopment ? 'http://localhost:8080' : (isTest ? 'https://www.pifutan.com' : 'http://zhzw.zhongwenlaw.com');
 
-export const baseDomainUrl = `${baseDomain}/jeecg-system`;
-
 /**
  * 上传父路径
  */
-const uploadUrl = `${baseDomainUrl}/sys/common/upload`;
+const uploadUrl = `${baseDomain}/jeecg-system/sys/common/upload`;
 
 export function doLogout() {
     return defHttp.get({ url: Api.Logout });

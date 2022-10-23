@@ -46,6 +46,7 @@ export const HeaderNav = () => {
                 backgroundColor: Dark.Gray[400],
                 boxShadow: Shadow.Large,
                 borderBottom: `1px solid ${Palette.Fill.Normal}`,
+                minHeight: `${headerMenuHeight}px`,
                 '& .MuiTabs-flexContainer': {
                     ...ContentCenterStyle,
                     width: '100%',

@@ -23,11 +23,15 @@ export const defaultTopMenuList = [Page.Home, Page.Category];
 export const homeTopMenuDict: Record<string, MenuItem> = {
     [Page.Home]: {
         name: '首页',
-        path: `/${Page.Home}`,
+        path: '/',
     },
     [Page.Category]: {
         name: '分类',
         path: `/${Page.Category}`,
+    },
+    [Page.Teams]: {
+        name: '团队',
+        path: `/${Page.Teams}`,
     },
     [Page.Publish]: {
         name: '发布',

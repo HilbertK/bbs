@@ -9,6 +9,7 @@ export enum Page {
     Login = 'login',
     Sub = 'sub',
     Setting = 'setting',
+    Teams = 'teams',
 }
 
 export const PageTitle = {

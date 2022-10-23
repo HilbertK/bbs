@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Mine } from './pages/mine';
 import { Home } from './pages/home';
 import { Category } from './pages/category';
+import { Teams } from './pages/teams';
 import { Publish } from './pages/publish';
 import { Page } from './utils/constants';
 import { Article } from './pages/article';
@@ -23,6 +24,7 @@ root.render(
         <Route path='/' element={<Home />} />
         <Route path={`/${Page.Mine}`} element={<Mine />} />
         <Route path={`/${Page.Category}`} element={<Category />} />
+        <Route path={`/${Page.Teams}`} element={<Teams />} />
         <Route path={`/${Page.Publish}`} element={<Publish />} />
         <Route path={`/${Page.Article}`} element={<Article />} />
         <Route path={`/${Page.Sub}`} element={<Sub />} />

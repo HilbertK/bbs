@@ -8,7 +8,7 @@ import { isFunction } from '../is';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { ContentTypeEnum, RequestEnum } from './enum';
 import { useMessage } from '../../hooks/useMessage';
-import { baseDomainUrl } from '../../service/api';
+import { baseDomain } from '../../service/api';
 import { RcFile } from 'antd/es/upload/interface';
 import { UploadParams } from '../../service/interface';
 
@@ -134,7 +134,7 @@ export class VAxios {
         } else {
         formData.append(customFilename, params.file);
         }
-        config.baseURL = baseDomainUrl;
+        config.baseURL = `${baseDomain}/jeecg-system`;
         if (params.data) {
             Object.keys(params.data).forEach((key) => {
                 const value = params.data![key];
