@@ -1,11 +1,11 @@
 import { Box } from '@mui/material';
-import React, { FC, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { FC, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Page } from '../../utils/constants';
 import { actions, SubMenuEnum } from '../../store/menu-slice';
 import { getUserList } from '../../service/api';
-import { Skeleton, Card, List, Spin } from 'antd';
+import { Skeleton, Card, List, Spin, Empty } from 'antd';
 
 const { Meta } = Card;
 
@@ -19,6 +19,7 @@ export const Teams: FC = () => {
         const data = await getUserList({
             column: 'createTime',
             order: 'desc',
+            // userType: 'LAW',
             pageNo: start,
             pageSize: 10,
         });
@@ -42,48 +43,38 @@ export const Teams: FC = () => {
         };
         void fetch();
     }, []);
-    return (
-        <Box>
-            <InfiniteScroll
-                dataLength={list.length}
-                next={loadMoreData}
-                hasMore={list.length < total}
-                loader={<Skeleton style={{ padding: '20px 0' }} title active />}
-                scrollableTarget='teams-list'
+    return (list.length ?
+        <InfiniteScroll
+            dataLength={list.length}
+            next={loadMoreData}
+            hasMore={list.length < total}
+            loader={<Skeleton style={{ padding: '20px 50px' }} title active />}
+            scrollableTarget='teams-list'
+        >
+            <List
+                dataSource={list}
+                grid={{gutter: 16, xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3}}
+                renderItem={({ realname, id, appearance, description, avatar }) => (
+                    <Card
+                        key={id}
+                        hoverable
+                        style={{ width: 300, margin: '20px auto' }}
+                        cover={
+                            <Box sx={{ width: '100%', height: '360px', overflow: 'hidden' }}>
+                                {!!(appearance ?? avatar) && <img style={{ width: '100%', height: 'auto' }} alt={realname} src={appearance ?? avatar} />}
+                            </Box>
+                        }
+                    >
+                        <Meta title={realname} description={description} />
+                    </Card>
+                )}
             >
-                <List
-                    dataSource={list}
-                    grid={{
-                        gutter: 16,
-                        xs: 1,
-                        sm: 1,
-                        md: 2,
-                        lg: 2,
-                        xl: 3,
-                        xxl: 3,
-                    }}
-                    renderItem={({ realname, id, appearance, description, avatar }) => (
-                        <Card
-                            key={id}
-                            hoverable
-                            style={{ width: 240, marginBottom: '20px' }}
-                            cover={
-                                <Box sx={{ width: '100%', height: '360px' }}>
-                                    {!!(appearance ?? avatar) && <img style={{ width: '100%', height: 'auto' }} alt={realname} src={appearance ?? avatar} />}
-                                </Box>
-                            }
-                        >
-                            <Meta title={realname} description={description} />
-                        </Card>
-                    )}
-                >
-                    {loading && list.length < total && (
-                    <div className="loading-container">
-                        <Spin />
-                    </div>
-                    )}
-                </List>
-            </InfiniteScroll>
-        </Box>
+                {loading && list.length < total && (
+                <div className="loading-container">
+                    <Spin />
+                </div>
+                )}
+            </List>
+        </InfiniteScroll> : <Empty style={{ padding: '32px 0' }} description={false} />
     );
 };

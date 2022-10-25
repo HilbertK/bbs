@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.scss';
 import App from './App';
@@ -13,6 +12,7 @@ import { Page } from './utils/constants';
 import { Article } from './pages/article';
 import { Sub } from './pages/sub';
 import { Setting } from './pages/setting';
+import { User } from './pages/user';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -29,6 +29,7 @@ root.render(
         <Route path={`/${Page.Article}`} element={<Article />} />
         <Route path={`/${Page.Sub}`} element={<Sub />} />
         <Route path={`/${Page.Setting}`} element={<Setting />} />
+        <Route path={`/${Page.User}`} element={<User />} />
       </Route>
     </Routes>
   </BrowserRouter>

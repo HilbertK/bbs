@@ -56,7 +56,7 @@ export const HeaderUser = () => {
     const renderAvatar = useMemo(() => (
         <Avatar
             url={userInfo?.avatar ?? ''}
-            name={userInfo?.username ?? '登录'}
+            name={userInfo?.realname ?? '登录'}
         />
     ), [userInfo]);
     return (
@@ -75,7 +75,7 @@ export const HeaderUser = () => {
                 }}
             >
                 <Box sx={drawerHeader}>
-                    <Box sx={drawerHeaderText}>{userInfo?.username}</Box>
+                    <Box sx={drawerHeaderText}>{userInfo?.realname}</Box>
                     {renderAvatar}
                 </Box>
                 <List>

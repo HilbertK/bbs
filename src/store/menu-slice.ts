@@ -119,6 +119,9 @@ const slice = createSlice({
     reducers: {
         setCurrSubMenu: (state, action: PayloadAction<SubMenuEnum | null>) => {
             state.currSubMenu = action.payload;
+            if (action.payload) {
+                document.title = subMenuDict[action.payload].name;
+            }
         },
         setTopSubMenu: (state, action: PayloadAction<TopMenu | null>) => {
             state.currTopMenu = action.payload;

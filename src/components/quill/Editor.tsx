@@ -1,19 +1,19 @@
 import { forwardRef, MutableRefObject, useMemo, useRef } from 'react';
+import './editor.scss';
 import ReactDOMServer from 'react-dom/server';
 import ReactQuill, { Quill } from 'react-quill';
 import BlotFormatter from 'quill-blot-formatter';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import 'react-quill/dist/quill.snow.css';
-import 'quill-emoji/dist/quill-emoji.css';
+import './quill-emoji.css';
 import { Light } from '../../base/style';
-import './editor.scss';
 import { FileUploader, ImgUploader } from './components/Uploader';
 import { VideoBlot } from './video';
 import { AttachmentBlot, attachmentBlotClassName, attachmentDownloadClassName, attachmentLoadingClassName } from './attachment';
 import type { RcFile } from 'antd/es/upload/interface';
 import { ImageBlot } from './image';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const Emoji = require('quill-emoji');
+const Emoji = require('quill-emoji/dist/quill-emoji');
 const icons = Quill.import('ui/icons');
 const qullSizes = Quill.import('formats/size');
 const quillFont = Quill.import('formats/font');

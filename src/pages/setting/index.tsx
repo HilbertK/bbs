@@ -7,6 +7,7 @@ import { DatePickerItem } from '../../components/form/DatePicker';
 import { InputItem } from '../../components/form/InputItem';
 import { RadioItem } from '../../components/form/RadioItem';
 import { ImgUploader } from '../../components/ImgUploader';
+import { AvatarContainerStyle } from '../../components/userinfo/MineInfo';
 import { checkPhone } from '../../service/api-utils';
 import { IUserInfo } from '../../service/interface';
 import { RootState } from '../../store';
@@ -14,8 +15,7 @@ import { actions, SubMenuEnum } from '../../store/menu-slice';
 import { updateUserInfoAction } from '../../store/user-slice';
 import { appearanceAspect, BaseButtonStyle, contentMinHeight, contentWidth, GrayOutlineButtonStyle } from '../../ui/base-utils';
 import { SexDict, SexEnum } from '../../utils/constants';
-import { AvatarContainerStyle } from '../mine';
-import { mineCenterAvatarSize, mineCenterContentTop } from '../mine/constants';
+import { mineCenterAvatarSize, mineCenterContentTop } from '../../components/userinfo/constants';
 
 interface InfoItem {
     label?: string,

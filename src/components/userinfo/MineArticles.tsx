@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { Empty, Spin } from 'antd';
 import { FC, useEffect, useState } from 'react';
-import { List } from '../../components/articles/List';
+import { List } from '../articles/List';
 import { useMessage } from '../../hooks/useMessage';
 import { ArticleListFilters, IArticleData } from '../../service/interface';
 import { service } from '../../service/mock-service';

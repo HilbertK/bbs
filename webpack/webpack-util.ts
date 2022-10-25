@@ -2,6 +2,7 @@ import path from 'path';
 import {Configuration, IgnorePlugin, RuleSetRule} from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 
 // 生成项目所需配置文件
@@ -172,7 +173,7 @@ export function generateConfiguration(
         optimization: {
             minimizer: [new TerserPlugin({
                 extractComments: false, // 不会生成licence
-            })],
+            }), new CssMinimizerPlugin()],
             /**
              * named: 使用目录+文件名命名，development时默认值
              * natural: 使用顺序数字
