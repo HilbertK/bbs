@@ -1,5 +1,6 @@
 /* eslint-disable guard-for-in */
 import { RcFile } from 'antd/lib/upload';
+import { baseDomain } from '../service/api';
 import { IArticleData } from '../service/interface';
 import { Page } from './constants';
 import { isObject } from './is';
@@ -47,6 +48,31 @@ export const getSizeString = (size: number) => {
         siz /= 1024;
     }
     return String(Math.floor(siz * 100) / 100) + TEXT[t];
+};
+
+/**
+ *  获取文件服务访问路径
+ * @param fileUrl 文件路径
+ * @param prefix(默认http)  文件路径前缀 http/https
+ */
+export const getFileAccessHttpUrl = (fileUrl: string, prefix = 'http') => {
+    let result = fileUrl;
+    try {
+        if (fileUrl && fileUrl.length > 0 && !fileUrl.startsWith(prefix)) {
+            //判断是否是数组格式
+            let isArray = fileUrl.indexOf('[') !== -1;
+            if (!isArray) {
+                let prefix = `${baseDomain}/jeecg-system/sys/common/static/`;
+                // 判断是否已包含前缀
+                if (!fileUrl.startsWith(prefix)) {
+                    result = `${prefix}${fileUrl}`;
+                }
+            }
+        }
+    } catch (err) {
+        console.error(err);
+    }
+    return result;
 };
 
 export function setObjToUrlParams(baseUrl: string, obj: any): string {

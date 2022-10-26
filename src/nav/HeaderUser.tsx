@@ -78,12 +78,12 @@ export const HeaderUser = () => {
                     <Box sx={drawerHeaderText}>{userInfo?.realname}</Box>
                     {renderAvatar}
                 </Box>
-                <List>
+                <List sx={{ padding: 0 }}>
                     {mineMenu.filter(item => item.show).map(({ name, handler, iconComp, key }, index) => (
                         <ListItem key={key} disablePadding>
                             <ListItemButton selected={index === activeIndex} onClick={itemHandler(handler)}>
                                 <ListItemIcon>{iconComp}</ListItemIcon>
-                                <ListItemText primary={name} />
+                                <ListItemText sx={{ paddingLeft: '50px' }} primary={name} />
                             </ListItemButton>
                         </ListItem>
                     ))}
