@@ -64,6 +64,10 @@ export const flowTopMenuDict = {
         name: '我接单的',
         path: `/${Page.Sub}?${subPathKey}=${SubPathValue.HandleFlows}`,
     },
+    [SubPathValue.Tipoff]: {
+        name: '全部举报',
+        path: `/${Page.Sub}?${subPathKey}=${SubPathValue.Tipoff}`,
+    },
 };
 
 export const subMenuDict: Record<string, MenuItem> = {
