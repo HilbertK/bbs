@@ -12,6 +12,7 @@ export const useMenu = (subMenu: SubMenuEnum | null, topMenu: TopMenu | null) =>
     const navigate = useNavigate();
     useEffect(() => {
         const setDefaultMenu = () => {
+            // TODO: 暂时跳个人中心
             navigate(`/${Page.Mine}`);
         };
         const subMenuItem = subMenu ? subMenuDict[subMenu] : null;

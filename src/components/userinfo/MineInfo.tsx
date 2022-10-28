@@ -13,6 +13,7 @@ import { Page, SexDict, SexEnum } from '../../utils/constants';
 import { MineArticles } from './MineArticles';
 import { mineCenterAvatarSize, mineDetailContentWidth, mineDetailSiderWidth } from './constants';
 import { IUserInfo } from '../../service/interface';
+import { Empty } from 'antd';
 
 interface InfoItem {
     key: string,
@@ -23,12 +24,12 @@ interface InfoItem {
 const showInfoNum = 2;
 
 export const MineInfo: FC<{
-    userInfo: IUserInfo,
+    userInfo: IUserInfo | null,
 }> = props => {
     const { userInfo } = props;
     const [showNum, setShowNum] = useState<number>(showInfoNum);
     const [checkedTab, setCheckedTab] = useState<number>(0);
-    if (userInfo === null) return null;
+    if (userInfo === null) return <Empty description={false} />;
     const navigate = useNavigate();
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setCheckedTab(newValue);

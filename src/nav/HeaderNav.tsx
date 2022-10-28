@@ -19,8 +19,8 @@ export const HeaderNav = () => {
             ...item,
             key,
             show: userInfo ? (checkFn ? checkFn(userRoles, userInfo) : true) : false,
-        }));
-    }, [currSubMenu, userInfo]);
+        })).filter(item => item.show);
+    }, [currSubMenu, userInfo, userRoles]);
     const getNewIndex = () => {
         const newIndex = tabList.findIndex(tab => currTopMenu === tab.key);
         if (newIndex < 0) return false;

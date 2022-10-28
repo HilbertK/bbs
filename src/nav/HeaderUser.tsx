@@ -37,7 +37,7 @@ export const HeaderUser = () => {
             }
             navigate(path);
         },
-    })).filter(item => item.show), [userInfo]);
+    })).filter(item => item.show), [userInfo, userRoles]);
     const findActiveIndex = () => mineMenu.findIndex(item => currSubMenu === item.key);
     const [menuVisible, setMenuVisible] = useState<boolean>(false);
     const [activeIndex, setActiveIndex] = useState<number>(findActiveIndex);

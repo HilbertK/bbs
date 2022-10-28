@@ -17,6 +17,7 @@ import { appearanceAspect, BaseButtonStyle, contentMinHeight, contentWidth, Gray
 import { SexDict, SexEnum } from '../../utils/constants';
 import { mineCenterAvatarSize, mineCenterContentTop } from '../../components/userinfo/constants';
 import { useMenu } from '../hooks/useMenu';
+import { Empty } from 'antd';
 
 interface InfoItem {
     label?: string,
@@ -41,7 +42,7 @@ export const Setting: FC = () => {
     const [itemValue, setItemValue] = useState<string>('');
     const [itemError, setItemError] = useState<string>('');
     useMenu(SubMenuEnum.Mine, null);
-    if (userInfo == null) return null;
+    if (userInfo == null) return <Empty description={false} />;
     const infoList: Array<InfoItem> = useMemo(() => [{
         key: 'realname',
         content: userInfo.realname ?? '',
