@@ -2,6 +2,7 @@ import {generateConfiguration} from './webpack/webpack-util';
 import {WebpackOptionsNormalized, DefinePlugin} from 'webpack';
 import path from 'path';
 import HtmlPlugin from 'html-webpack-plugin';
+import {CleanWebpackPlugin} from 'clean-webpack-plugin';
 
 // 注意：__dirname为本文件所在目录
 export default (
@@ -58,6 +59,7 @@ export default (
                 __base_name__: JSON.stringify(process.env.BASE_NAME ?? ''),
                 __sub_path__: JSON.stringify(process.env.SUB_PATH ?? ''),
             }),
+            new CleanWebpackPlugin(),
         ])
     } as WebpackOptionsNormalized;
 };
