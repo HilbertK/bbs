@@ -5,14 +5,11 @@ import { RootState } from '../../store';
 import { Page } from '../../utils/constants';
 import { TableList } from '../../components/articles/TableList';
 import { actions, SubMenuEnum } from '../../store/menu-slice';
+import { useMenu } from '../hooks/useMenu';
 
 export const Home: FC = () => {
-    const list = useSelector((state: RootState) => state.home.list);
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(actions.setCurrSubMenu(SubMenuEnum.Home));
-        dispatch(actions.setTopSubMenu(Page.Home));
-    }, []);
+    useMenu(SubMenuEnum.Home, Page.Home);
     return (
         <Box>
             <TableList />

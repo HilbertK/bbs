@@ -6,6 +6,7 @@ import { Page } from '../../utils/constants';
 import { actions, SubMenuEnum } from '../../store/menu-slice';
 import { getUserList } from '../../service/api';
 import { Skeleton, Card, List, Spin, Empty } from 'antd';
+import { useMenu } from '../hooks/useMenu';
 
 const { Meta } = Card;
 
@@ -33,10 +34,7 @@ export const Teams: FC = () => {
         await fetchData();
         setLoading(false);
     };
-    useEffect(() => {
-        dispatch(actions.setCurrSubMenu(SubMenuEnum.Home));
-        dispatch(actions.setTopSubMenu(Page.Teams));
-    }, []);
+    useMenu(SubMenuEnum.Home, Page.Teams);
     useEffect(() => {
         const fetch = async () => {
             await loadMoreData();

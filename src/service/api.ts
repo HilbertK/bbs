@@ -28,6 +28,8 @@ enum Api {
     PositionList = '/jeecg-system/sys/position/list',
     UserList = '/jeecg-system/sys/user/list',
     RoleList = '/jeecg-system/sys/role/list',
+    getUserRole = '/jeecg-system/sys/user/queryUserRole',
+    allRolesList = '/jeecg-system/sys/role/queryall',
     QueryDepartTreeSync = '/jeecg-system/sys/sysDepart/queryDepartTreeSync',
     QueryTreeList = '/jeecg-system/sys/sysDepart/queryTreeList',
     GetTableList = '/jeecg-system/sys/user/queryUserComponentData',
@@ -92,6 +94,12 @@ export function getUserInfo() {
 }
 
 /**
+ * 用户角色接口
+ * @param params
+ */
+export const getUserRoles = (params: any) => defHttp.get({ url: Api.getUserRole, params }, { errorMessageMode: 'none' });
+
+/**
  * 职务列表
  * @param params
  */
@@ -108,7 +116,11 @@ export const getUserList = (params: any) => defHttp.get({ url: Api.UserList, par
  * @param params
  */
 export const getRoleList = (params: any) => defHttp.get({ url: Api.RoleList, params });
-
+/**
+ * 获取全部角色
+ * @param params
+ */
+export const getAllRolesList = (params: any) => defHttp.get({ url: Api.allRolesList, params });
 /**
  * 异步获取部门树列表
  */

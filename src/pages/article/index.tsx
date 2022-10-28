@@ -15,6 +15,7 @@ import acticleSlice from './slice';
 import { useSearchParams } from 'react-router-dom';
 import { useMessage } from '../../hooks/useMessage';
 import { actions, SubMenuEnum } from '../../store/menu-slice';
+import { useMenu } from '../hooks/useMenu';
 
 export const Article: FC = () => {
     const article = useSelector((state: RootState) => state.article.data);
@@ -42,10 +43,7 @@ export const Article: FC = () => {
             notification.error({message: operateErrorTips});
         }
     };
-    useEffect(() => {
-        dispatch(actions.setCurrSubMenu(SubMenuEnum.Home));
-        dispatch(actions.setTopSubMenu(null));
-    }, []);
+    useMenu(SubMenuEnum.Home, null);
     useEffect(() => {
         const articleId = searchParams.get('id');
         if (articleId == null) return;

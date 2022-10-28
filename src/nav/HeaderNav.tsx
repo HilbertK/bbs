@@ -9,15 +9,16 @@ import { subMenuDict } from '../store/menu-slice';
 
 export const HeaderNav = () => {
     const userInfo = useSelector((state: RootState) => state.user.userInfo);
+    const userRoles = useSelector((state: RootState) => state.user.userRoles);
     const currSubMenu = useSelector((state: RootState) => state.menu.currSubMenu);
     const currTopMenu = useSelector((state: RootState) => state.menu.currTopMenu);
     const navigate = useNavigate();
     const tabList = useMemo(() => {
         if (!currSubMenu) return [];
-        return Object.entries(subMenuDict[currSubMenu].children ?? {}).map(([key, { checkFn, ...item }]) => ({
+        return Object.entries(subMenuDict[currSubMenu]?.children ?? {}).map(([key, { checkFn, ...item }]) => ({
             ...item,
             key,
-            show: userInfo ? (checkFn ? checkFn(userInfo) : true) : false,
+            show: userInfo ? (checkFn ? checkFn(userRoles, userInfo) : true) : false,
         }));
     }, [currSubMenu, userInfo]);
     const getNewIndex = () => {

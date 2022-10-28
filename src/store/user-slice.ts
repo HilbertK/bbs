@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IUserInfo, LoginParams, ThirdLoginParams } from '../service/interface';
-import { doLogout, getUserInfo, loginApi, thirdLogin, updateUserInfo } from '../service/api';
+import { doLogout, getUserInfo, loginApi, thirdLogin, updateUserInfo, getUserRoles } from '../service/api';
 import { TOKEN_KEY, USER_INFO_KEY } from '../utils/cache/enum';
 import { getToken, setAuthCache } from '../utils/auth';
 import { useMessage } from '../hooks/useMessage';
-import { Page } from '../utils/constants';
 
 export interface InitialState {
     userInfo: IUserInfo | null,
+    userRoles: string[],
     token: string | null,
     sessionTimeout: boolean,
     loading: boolean,
@@ -15,6 +15,7 @@ export interface InitialState {
 
 const initialState: InitialState = {
     userInfo: null,
+    userRoles: [],
     token: getToken() || null,
     sessionTimeout: false,
     loading: false,
@@ -37,6 +38,9 @@ const slice = createSlice({
         setUserInfo: (state, action: PayloadAction<IUserInfo | null>) => {
             state.userInfo = action.payload;
             setAuthCache(USER_INFO_KEY, action.payload);
+        },
+        setUserRoles: (state, action: PayloadAction<string[]>) => {
+            state.userRoles = action.payload;
         },
         setToken: (state, action: PayloadAction<string | null>) => {
             state.token = action.payload;
@@ -115,6 +119,8 @@ export const getUserInfoAction = createAsyncThunk<any, undefined>(
         const res = await getUserInfo();
         if (res && res.userInfo) {
             dispatch(actions.setUserInfo(res.userInfo));
+            const userRoles = await getUserRoles({ userid: res.userInfo.id });
+            dispatch(actions.setUserRoles(userRoles));
             return res.userInfo;
         }
         return null;

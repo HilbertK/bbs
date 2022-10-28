@@ -3,22 +3,19 @@ import { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Palette } from '../../base/style';
 import { contentMinHeight } from '../../ui/base-utils';
-import { actions, SubMenuEnum } from '../../store/menu-slice';
+import { SubMenuEnum } from '../../store/menu-slice';
 import { MineInfo } from '../../components/userinfo/MineInfo';
 import { mineCenterContentTop } from '../../components/userinfo/constants';
 import { IUserInfo } from '../../service/interface';
 import { Empty, Spin } from 'antd';
 import { useSearchParams } from 'react-router-dom';
+import { useMenu } from '../hooks/useMenu';
 
 export const User: FC = () => {
-    const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<IUserInfo | null>(null);
     const [searchParams] = useSearchParams();
-    useEffect(() => {
-        dispatch(actions.setCurrSubMenu(SubMenuEnum.Home));
-        dispatch(actions.setTopSubMenu(null));
-    }, []);
+    useMenu(SubMenuEnum.Home, null);
     useEffect(() => {
         const userId = searchParams.get('id');
         if (userId == null) return;

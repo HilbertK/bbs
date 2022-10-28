@@ -16,6 +16,7 @@ import { updateUserInfoAction } from '../../store/user-slice';
 import { appearanceAspect, BaseButtonStyle, contentMinHeight, contentWidth, GrayOutlineButtonStyle } from '../../ui/base-utils';
 import { SexDict, SexEnum } from '../../utils/constants';
 import { mineCenterAvatarSize, mineCenterContentTop } from '../../components/userinfo/constants';
+import { useMenu } from '../hooks/useMenu';
 
 interface InfoItem {
     label?: string,
@@ -39,10 +40,7 @@ export const Setting: FC = () => {
     const [editIndex, setEditIndex] = useState<number | null>(null);
     const [itemValue, setItemValue] = useState<string>('');
     const [itemError, setItemError] = useState<string>('');
-    useEffect(() => {
-        dispatch(actions.setCurrSubMenu(SubMenuEnum.Mine));
-        dispatch(actions.setTopSubMenu(null));
-    }, []);
+    useMenu(SubMenuEnum.Mine, null);
     if (userInfo == null) return null;
     const infoList: Array<InfoItem> = useMemo(() => [{
         key: 'realname',

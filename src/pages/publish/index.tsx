@@ -19,6 +19,7 @@ import { useMessage } from '../../hooks/useMessage';
 import { ArticleParams } from '../../service/interface';
 import { useDispatch } from 'react-redux';
 import { actions, SubMenuEnum } from '../../store/menu-slice';
+import { useMenu } from '../hooks/useMenu';
 
 export const Publish: FC = () => {
     const storageData = publishStorageService.getStoragePublishArticle();
@@ -99,10 +100,7 @@ export const Publish: FC = () => {
             notification.error({ message: '发布失败，请重试' });
         }
     }, [content, title, category, publishStorageService]);
-    useEffect(() => {
-        dispatch(actions.setCurrSubMenu(SubMenuEnum.Home));
-        dispatch(actions.setTopSubMenu(Page.Publish));
-    }, []);
+    useMenu(SubMenuEnum.Home, Page.Publish);
     useEffect(() => {
         const storageContent = publishStorageService.getStoragePublishArticle();
         if (

@@ -1,20 +1,17 @@
 import { Box } from '@mui/material';
-import { FC, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { FC } from 'react';
+import { useSelector } from 'react-redux';
 import { Palette } from '../../base/style';
 import { RootState } from '../../store';
 import { contentMinHeight } from '../../ui/base-utils';
-import { actions, SubMenuEnum } from '../../store/menu-slice';
+import { SubMenuEnum } from '../../store/menu-slice';
 import { MineInfo } from '../../components/userinfo/MineInfo';
 import { mineCenterContentTop } from '../../components/userinfo/constants';
+import { useMenu } from '../hooks/useMenu';
 
 export const Mine: FC = () => {
     const userInfo = useSelector((state: RootState) => state.user.userInfo);
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(actions.setCurrSubMenu(SubMenuEnum.Mine));
-        dispatch(actions.setTopSubMenu(null));
-    }, []);
+    useMenu(SubMenuEnum.Mine, null);
     if (userInfo === null) return null;
     return (
         <Box sx={MineContainer}>

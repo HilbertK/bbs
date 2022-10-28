@@ -18,10 +18,11 @@ export const HeaderUser = () => {
     const currSubMenu = useSelector((state: RootState) => state.menu.currSubMenu);
     const [loginOpen, setLoginOpen] = useState<boolean>(false);
     const userInfo = useSelector((state: RootState) => state.user.userInfo);
+    const userRoles = useSelector((state: RootState) => state.user.userRoles);
     const navigate = useNavigate();
     const mineMenu = useMemo(() => subRoutes.map(({ checkFn, ...subRoute }, index) => ({
         ...subRoute,
-        show: userInfo ? (checkFn ? checkFn(userInfo) : true) : false,
+        show: userInfo ? (checkFn ? checkFn(userRoles, userInfo) : true) : false,
         handler: () => {
             const { type, path, key } = subRoute;
             switch (type) {
@@ -36,7 +37,7 @@ export const HeaderUser = () => {
             }
             navigate(path);
         },
-    })), [userInfo]);
+    })).filter(item => item.show), [userInfo]);
     const findActiveIndex = () => mineMenu.findIndex(item => currSubMenu === item.key);
     const [menuVisible, setMenuVisible] = useState<boolean>(false);
     const [activeIndex, setActiveIndex] = useState<number>(findActiveIndex);
@@ -79,7 +80,7 @@ export const HeaderUser = () => {
                     {renderAvatar}
                 </Box>
                 <List sx={{ padding: 0 }}>
-                    {mineMenu.filter(item => item.show).map(({ name, handler, iconComp, key }, index) => (
+                    {mineMenu.map(({ name, handler, iconComp, key }, index) => (
                         <ListItem key={key} disablePadding>
                             <ListItemButton selected={index === activeIndex} onClick={itemHandler(handler)}>
                                 <ListItemIcon>{iconComp}</ListItemIcon>

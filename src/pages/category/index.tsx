@@ -16,6 +16,7 @@ import { List } from '../../components/articles/List';
 import { ArticleListSorter, IArticleData } from '../../service/interface';
 import { useMessage } from '../../hooks/useMessage';
 import { actions, SubMenuEnum } from '../../store/menu-slice';
+import { useMenu } from '../hooks/useMenu';
 
 type MenuItems = Required<MenuProps>['items'];
 
@@ -107,10 +108,7 @@ export const Category: FC = () => {
   const loadMore = async () => {
     await fetchData(categoryFilter, currSorter, start, list);
   };
-  useEffect(() => {
-      dispatch(actions.setCurrSubMenu(SubMenuEnum.Home));
-      dispatch(actions.setTopSubMenu(Page.Category));
-  }, []);
+  useMenu(SubMenuEnum.Home, Page.Category);
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);

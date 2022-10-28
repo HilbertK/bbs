@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { subPathKey, SubPathValue } from '../pages/sub/constants';
 import { IUserInfo } from '../service/interface';
+import { RoleEnum } from '../utils/auth/constants';
 import { Page } from '../utils/constants';
 
 export enum SubMenuEnum {
@@ -15,11 +16,13 @@ export interface MenuItem {
     name: string,
     path: string,
     children?: Record<string, MenuItem>,
-    checkFn?: (userInfo: IUserInfo) => boolean,
+    checkFn?: (userRoles: string[], userInfo: IUserInfo | null) => boolean,
 }
 
 export const defaultTopMenuList = [Page.Home, Page.Category];
 
+const isSuperUser = (userInfo: IUserInfo | null) => userInfo?.username === 'admin';
+// TODO: 超级管理员先简单地用username === admin的判断
 export const homeTopMenuDict: Record<string, MenuItem> = {
     [Page.Home]: {
         name: '首页',
@@ -36,11 +39,10 @@ export const homeTopMenuDict: Record<string, MenuItem> = {
     [Page.Publish]: {
         name: '发布',
         path: `/${Page.Publish}`,
-        checkFn: userInfo => !!userInfo.id,
     },
 };
 
-export const userTopMenuDict = {
+export const userTopMenuDict: Record<string, MenuItem> = {
     [SubPathValue.User]: {
         name: '用户管理',
         path: `/${Page.Sub}?${subPathKey}=${SubPathValue.User}`,
@@ -51,11 +53,7 @@ export const userTopMenuDict = {
     },
 };
 
-export const flowTopMenuDict = {
-    [SubPathValue.AllFlows]: {
-        name: '全部工单',
-        path: `/${Page.Sub}?${subPathKey}=${SubPathValue.AllFlows}`,
-    },
+export const flowTopMenuDict: Record<string, MenuItem> = {
     [SubPathValue.CreateFlows]: {
         name: '我发起的',
         path: `/${Page.Sub}?${subPathKey}=${SubPathValue.CreateFlows}`,
@@ -64,9 +62,15 @@ export const flowTopMenuDict = {
         name: '我接单的',
         path: `/${Page.Sub}?${subPathKey}=${SubPathValue.HandleFlows}`,
     },
+    [SubPathValue.AllFlows]: {
+        name: '全部工单',
+        path: `/${Page.Sub}?${subPathKey}=${SubPathValue.AllFlows}`,
+        checkFn: (userRoles, userInfo) => isSuperUser(userInfo) || userRoles.includes(RoleEnum.WorkOrderAdmin),
+    },
     [SubPathValue.Tipoff]: {
         name: '全部举报',
         path: `/${Page.Sub}?${subPathKey}=${SubPathValue.Tipoff}`,
+        checkFn: (userRoles, userInfo) => isSuperUser(userInfo) || userRoles.includes(RoleEnum.WorkOrderAdmin),
     },
 };
 
@@ -74,7 +78,9 @@ export const subMenuDict: Record<string, MenuItem> = {
     [SubMenuEnum.Home]: {
         name: '线上中闻',
         path: '/',
-        children: homeTopMenuDict
+        children: homeTopMenuDict,
+        // TODO: 先限制除了超级管理员其他都不可见
+        checkFn: (userRoles, userInfo) => isSuperUser(userInfo),
     },
     [SubMenuEnum.Mine]: {
         name: '个人中心',
@@ -84,12 +90,13 @@ export const subMenuDict: Record<string, MenuItem> = {
         name: '用户系统',
         path: `/${Page.Sub}?${subPathKey}=${SubPathValue.User}`,
         children: userTopMenuDict,
-        checkFn: userInfo => !!userInfo.id
+        checkFn: (userRoles, userInfo) => isSuperUser(userInfo) || userRoles.includes(RoleEnum.UserCenterAdmin),
     },
     [SubMenuEnum.Flow]: {
         name: '工单系统',
-        path: `/${Page.Sub}?${subPathKey}=${SubPathValue.AllFlows}`,
+        path: `/${Page.Sub}?${subPathKey}=${SubPathValue.CreateFlows}`,
         children: flowTopMenuDict,
+        checkFn: (userRoles, userInfo) => isSuperUser(userInfo) || userRoles.includes(RoleEnum.Employee) || userRoles.includes(RoleEnum.WorkOrderAdmin),
     }
 };
 
