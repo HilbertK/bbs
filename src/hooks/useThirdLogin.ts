@@ -128,7 +128,7 @@ export const useThirdLogin = () => {
             mobile: thirdPhone,
             thirdUserUuid: thirdUserUuid,
         };
-        await defHttp.post({ url: '/sys/thirdLogin/bindingThirdPhone', params }, { isTransformResponse: false }).then((res) => {
+        await defHttp.post({ url: '/jeecg-system/sys/thirdLogin/bindingThirdPhone', params }, { isTransformResponse: false }).then((res) => {
             if (res.success) {
                 setBindingPhoneModal(false);
                 doThirdLogin(res.result);
